@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateComponentTypesTable extends Migration
+class CreateCaliperComponentsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,9 +13,10 @@ class CreateComponentTypesTable extends Migration
      */
     public function up()
     {
-        Schema::create('component_types', function (Blueprint $table) {
-            $table->id();
-            $table->string('type');
+        Schema::create('caliper_components', function (Blueprint $table) {
+            $table->foreignid('caliID');
+            $table->foreignId('compID');
+            $table->integer('qty');
             $table->timestamps();
         });
     }
@@ -27,6 +28,6 @@ class CreateComponentTypesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('component_types');
+        Schema::dropIfExists('caliper_components');
     }
 }
