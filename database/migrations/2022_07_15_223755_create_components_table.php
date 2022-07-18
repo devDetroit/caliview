@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\ComponentType;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -15,6 +16,9 @@ class CreateComponentsTable extends Migration
     {
         Schema::create('components', function (Blueprint $table) {
             $table->id();
+            $table->string('component_number');
+            $table->foreignId('type_id');
+            $table->string('measure');
             $table->timestamps();
         });
     }

@@ -14,8 +14,8 @@ class CreateCaliperComponentsTable extends Migration
     public function up()
     {
         Schema::create('caliper_components', function (Blueprint $table) {
-            $table->foreignid('caliID');
-            $table->foreignId('compID');
+            $table->foreignid('caliper_id');
+            $table->foreignId('component_id');
             $table->integer('qty');
             $table->timestamps();
         });

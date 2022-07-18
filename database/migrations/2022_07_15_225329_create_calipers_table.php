@@ -15,7 +15,7 @@ class CreateCalipersTable extends Migration
     {
         Schema::create('calipers', function (Blueprint $table) {
             $table->id();
-            $table->string('partNo');
+            $table->string('part_number');
             $table->string('family');
             $table->timestamps();
         });

@@ -15,7 +15,7 @@ class CreateCaliperPhotosTable extends Migration
     {
         Schema::create('caliper_photos', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('pnID');
+            $table->foreignId('caliper_id');
             $table->string('path');
             $table->timestamps();
         });
