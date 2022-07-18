@@ -52,7 +52,7 @@ class ComponentTypesCRUDController extends Controller
      */
     public function show(ComponentType $type)
     {
-        return view('componentTypesCRUD.show', compact('component_types'));
+        //
     }
     /**
      * Show the form for editing the specified resource.
@@ -62,7 +62,7 @@ class ComponentTypesCRUDController extends Controller
      */
     public function edit(ComponentType $type)
     {
-        return view('componentTypesCRUD.edit', compact('component_types'));
+        return view('componentTypesCRUD.edit', compact('type'));
     }
     /**
      * Update the specified resource in storage.

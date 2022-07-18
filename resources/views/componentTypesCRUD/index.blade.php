@@ -19,7 +19,7 @@
         @endif
         <table class="table table-bordered">
             <tr>
-                <th>S.No</th>
+                <th>#</th>
                 <th>Type Name</th>
                 <th width="280px">Action</th>
             </tr>

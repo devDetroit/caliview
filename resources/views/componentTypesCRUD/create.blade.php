@@ -3,27 +3,29 @@
 @section('content')
 <div class="container">
     <div class="row justify-content-center">
+        @if(session('status'))
+        <div class="alert alert-success mb-1 mt-1">
+            {{ session('status') }}
+        </div>
+        @endif
         <div class="col-md-8">
             <div class="card">
                 <div class="card-header">
                     New Component Type
                 </div>
                 <div class="card-body">
-                    <form>
+                    <form action="{{ route('componentTypes.store') }}" method="POST">
+                        @csrf
                         <div class="mb-3">
-                            <label for="exampleInputEmail1" class="form-label">Email address</label>
-                            <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
-                            <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
+                            <label for="newComponentType" class="form-label">Type name</label>
+                            <input type="text" name="type" class="form-control" id="newComponentType" required>
                         </div>
-                        <div class="mb-3">
-                            <label for="exampleInputPassword1" class="form-label">Password</label>
-                            <input type="password" class="form-control" id="exampleInputPassword1">
+                        <div class="float-end">
+                            <button type="submit" class="btn btn-primary">Submit</button>
                         </div>
-                        <div class="mb-3 form-check">
-                            <input type="checkbox" class="form-check-input" id="exampleCheck1">
-                            <label class="form-check-label" for="exampleCheck1">Check me out</label>
+                        <div class="float-start">
+                            <a class="btn btn-danger" href="{{ route('componentTypes.index') }}"> Cancel</a>
                         </div>
-                        <button type="submit" class="btn btn-primary">Submit</button>
                     </form>
                 </div>
             </div>
