@@ -14,10 +14,12 @@ class CreateCaliperComponentsTable extends Migration
     public function up()
     {
         Schema::create('caliper_components', function (Blueprint $table) {
-            $table->foreignid('caliper_id');
-            $table->foreignId('component_id');
-            $table->integer('qty');
+            $table->foreignid('caliper_id')->constrained();
+            $table->foreignId('component_id')->constrained();
+            $table->integer('quantity');
             $table->timestamps();
+            $table->foreignId('created_by')->constrained('users');
+            $table->foreignId('update_by')->constrained('users');
         });
     }
 

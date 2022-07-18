@@ -17,7 +17,7 @@ class CreateComponentsTable extends Migration
         Schema::create('components', function (Blueprint $table) {
             $table->id();
             $table->string('component_number');
-            $table->foreignId('type_id');
+            $table->foreignId('type_id')->constrained('component_types');
             $table->string('measure');
             $table->timestamps();
         });

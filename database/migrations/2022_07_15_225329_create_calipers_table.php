@@ -18,6 +18,8 @@ class CreateCalipersTable extends Migration
             $table->string('part_number');
             $table->string('family');
             $table->timestamps();
+            $table->foreignId('created_by')->constrained('users');
+            $table->foreignId('update_by')->constrained('users');
         });
     }
 
