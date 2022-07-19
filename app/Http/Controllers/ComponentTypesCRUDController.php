@@ -15,7 +15,7 @@ class ComponentTypesCRUDController extends Controller
     public function index()
     {
         return view('componentTypesCRUD.index', [
-            'types' => ComponentType::orderBy('id')->get()
+            'componentType' => ComponentType::orderBy('id')->get()
         ]);
     }
     /**
@@ -38,9 +38,9 @@ class ComponentTypesCRUDController extends Controller
         $request->validate([
             'type' => 'required'
         ]);
-        $type = new ComponentType;
-        $type->type = $request->type;
-        $type->save();
+        $componentType = new ComponentType;
+        $componentType->type = $request->type;
+        $componentType->save();
         return redirect()->route('componentTypes.index')
             ->with('success', 'Type has been created successfully.');
     }
@@ -50,7 +50,7 @@ class ComponentTypesCRUDController extends Controller
      * @param  \App\ComponentType  $type
      * @return \Illuminate\Http\Response
      */
-    public function show(ComponentType $type)
+    public function show(ComponentType $componentType)
     {
         //
     }
@@ -60,9 +60,9 @@ class ComponentTypesCRUDController extends Controller
      * @param  \App\Company  $type
      * @return \Illuminate\Http\Response
      */
-    public function edit(ComponentType $type)
+    public function edit(ComponentType $componentType)
     {
-        return view('componentTypesCRUD.edit', compact('type'));
+        return view('componentTypesCRUD.edit', compact('componentType'));
     }
     /**
      * Update the specified resource in storage.
@@ -76,9 +76,9 @@ class ComponentTypesCRUDController extends Controller
         $request->validate([
             'type' => 'required'
         ]);
-        $type = ComponentType::find($id);
-        $type->type = $request->type;
-        $type->save();
+        $componentType = ComponentType::find($id);
+        $componentType->type = $request->type;
+        $componentType->save();
         return redirect()->route('componentTypes.index')
             ->with('success', 'Type Has Been updated successfully');
     }
@@ -88,9 +88,9 @@ class ComponentTypesCRUDController extends Controller
      * @param  \App\ComponentType  $type
      * @return \Illuminate\Http\Response
      */
-    public function destroy(ComponentType $type)
+    public function destroy(ComponentType $componentType)
     {
-        $type->delete();
+        $componentType->delete();
         return redirect()->route('componentTypes.index')
             ->with('success', 'Type has been deleted successfully');
     }

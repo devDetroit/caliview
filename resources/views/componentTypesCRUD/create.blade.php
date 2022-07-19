@@ -18,7 +18,7 @@
                         @csrf
                         <div class="mb-3">
                             <label for="newComponentType" class="form-label">Type name</label>
-                            <input type="text" name="type" class="form-control" id="newComponentType" required>
+                            <input type="text" name="componentType" class="form-control" id="newComponentType" required>
                         </div>
                         <div class="float-end">
                             <button type="submit" class="btn btn-primary">Submit</button>
