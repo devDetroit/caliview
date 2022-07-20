@@ -47,7 +47,7 @@ class ComponentTypesCRUDController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\ComponentType  $type
+     * @param  \App\ComponentType  $componentType
      * @return \Illuminate\Http\Response
      */
     public function show(ComponentType $componentType)
@@ -57,7 +57,7 @@ class ComponentTypesCRUDController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Company  $type
+     * @param  \App\ComponentType  $componentType
      * @return \Illuminate\Http\Response
      */
     public function edit(ComponentType $componentType)
@@ -68,7 +68,7 @@ class ComponentTypesCRUDController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\ComponentType  $type
+     * @param  \App\ComponentType  $id
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
@@ -80,18 +80,18 @@ class ComponentTypesCRUDController extends Controller
         $componentType->type = $request->type;
         $componentType->save();
         return redirect()->route('componentTypes.index')
-            ->with('success', 'Type Has Been updated successfully');
+            ->with('success', 'Type has been updated successfully.');
     }
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\ComponentType  $type
+     * @param  \App\ComponentType  $componentType
      * @return \Illuminate\Http\Response
      */
     public function destroy(ComponentType $componentType)
     {
         $componentType->delete();
         return redirect()->route('componentTypes.index')
-            ->with('success', 'Type has been deleted successfully');
+            ->with('success', 'Type has been deleted successfully.');
     }
 }

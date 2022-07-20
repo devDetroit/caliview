@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ComponentTypesCRUDController;
 use App\Http\Controllers\ComponentsCRUDController;
 
 /*
@@ -22,3 +23,4 @@ Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 Route::resource('componentTypes', App\Http\Controllers\ComponentTypesCRUDController::class);
+Route::resource('components', App\Http\Controllers\ComponentsCRUDController::class);

@@ -54,6 +54,9 @@
                             @endif
                         @else
                             <li class="nav-item">
+                                <a class="nav-link" href="/components" role="button">Components</a>
+                            </li>
+                            <li class="nav-item">
                                 <a class="nav-link" href="/componentTypes" role="button">Component Types</a>
                             </li>
                             <li class="nav-item dropdown">
