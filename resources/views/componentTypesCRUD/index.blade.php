@@ -22,15 +22,16 @@
                     <tr>
                         <th>#</th>
                         <th>Type Name</th>
-                        <th width="35%">Action</th>
+                        <th width="15%">Edit</th>
+                        <th width="15%">Delete</th>
                     </tr>
                     @foreach ($componentType as $type)
                     <tr>
                         <td>{{ $type->id }}</td>
                         <td>{{ $type->type }}</td>
+                        <td><a class="btn btn-primary btn-sm" href="{{ route('componentTypes.edit', ['componentType' => $type->id]) }}" role="button">Edit</a></td>
                         <td>
                             <form action="{{ route('componentTypes.destroy', ['componentType' => $type->id]) }}" method="Post">
-                                <a class="btn btn-primary btn-sm" href="{{ route('componentTypes.edit', ['componentType' => $type->id]) }}" role="button">Edit</a>
                                 @csrf
                                 @method('DELETE')
                                 <button class="btn btn-danger btn-sm" type="submit">Delete</button>

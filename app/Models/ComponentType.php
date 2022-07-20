@@ -14,7 +14,7 @@ class ComponentType extends Model
      *
      * @return relationship
      */
-    public function compontent() {
+    public function component() {
         return $this->hasMany(Component::class, 'type_id');
     }
 }

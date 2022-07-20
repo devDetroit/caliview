@@ -16,7 +16,7 @@ class ComponentsCRUDController extends Controller
     public function index()
     {
         return view('componentsCRUD.index', [
-            'component' => Component::orderBy('id')->get()
+            'components' => Component::with('componentType')->orderBy('id')->get()
         ]);
     }
 
