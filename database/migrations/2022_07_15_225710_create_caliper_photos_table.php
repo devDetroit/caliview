@@ -19,7 +19,7 @@ class CreateCaliperPhotosTable extends Migration
             $table->string('path');
             $table->timestamps();
             $table->foreignId('created_by')->constrained('users');
-            $table->foreignId('update_by')->constrained('users');
+            $table->foreignId('updated_by')->constrained('users');
         });
     }
 

@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\ComponentType;
+use App\Models\ComponentTypes;
 use Illuminate\Http\Request;
 
 class ComponentTypesCRUDController extends Controller
@@ -15,7 +15,7 @@ class ComponentTypesCRUDController extends Controller
     public function index()
     {
         return view('componentTypesCRUD.index', [
-            'componentType' => ComponentType::orderBy('id')->get()
+            'componentTypes' => ComponentTypes::orderBy('id')->get()
         ]);
     }
     /**
@@ -38,7 +38,7 @@ class ComponentTypesCRUDController extends Controller
         $request->validate([
             'type' => 'required'
         ]);
-        $componentType = new ComponentType;
+        $componentType = new ComponentTypes;
         $componentType->type = $request->type;
         $componentType->save();
         return redirect()->route('componentTypes.index')
@@ -47,20 +47,20 @@ class ComponentTypesCRUDController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\ComponentType  $componentType
+     * @param  \App\Models\ComponentTypes  $componentType
      * @return \Illuminate\Http\Response
      */
-    public function show(ComponentType $componentType)
+    public function show(ComponentTypes $componentType)
     {
         //
     }
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\ComponentType  $componentType
+     * @param  \App\Models\ComponentTypes  $componentType
      * @return \Illuminate\Http\Response
      */
-    public function edit(ComponentType $componentType)
+    public function edit(ComponentTypes $componentType)
     {
         return view('componentTypesCRUD.edit', compact('componentType'));
     }
@@ -68,7 +68,7 @@ class ComponentTypesCRUDController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\ComponentType  $id
+     * @param  \App\Models\ComponentTypes  $id
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
@@ -76,7 +76,7 @@ class ComponentTypesCRUDController extends Controller
         $request->validate([
             'type' => 'required'
         ]);
-        $componentType = ComponentType::find($id);
+        $componentType = ComponentTypes::find($id);
         $componentType->type = $request->type;
         $componentType->save();
         return redirect()->route('componentTypes.index')
@@ -85,10 +85,10 @@ class ComponentTypesCRUDController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\ComponentType  $componentType
+     * @param  \App\Models\ComponentTypes  $componentType
      * @return \Illuminate\Http\Response
      */
-    public function destroy(ComponentType $componentType)
+    public function destroy(ComponentTypes $componentType)
     {
         $componentType->delete();
         return redirect()->route('componentTypes.index')

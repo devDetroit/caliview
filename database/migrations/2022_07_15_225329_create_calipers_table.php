@@ -16,10 +16,10 @@ class CreateCalipersTable extends Migration
         Schema::create('calipers', function (Blueprint $table) {
             $table->id();
             $table->string('part_number');
-            $table->string('family');
+            $table->foreignId('family_id')->constrained('caliper_families');
             $table->timestamps();
             $table->foreignId('created_by')->constrained('users');
-            $table->foreignId('update_by')->constrained('users');
+            $table->foreignId('updated_by')->constrained('users');
         });
     }
 

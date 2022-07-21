@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateComponentsTable extends Migration
+class CreateCaliperFamiliesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,9 @@ class CreateComponentsTable extends Migration
      */
     public function up()
     {
-        Schema::create('components', function (Blueprint $table) {
+        Schema::create('caliper_families', function (Blueprint $table) {
             $table->id();
-            $table->string('component_number');
-            $table->foreignId('type_id')->constrained('component_types');
-            $table->string('measure');
+            $table->string('family');
             $table->timestamps();
         });
     }
@@ -29,6 +27,6 @@ class CreateComponentsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('components');
+        Schema::dropIfExists('caliper_families');
     }
 }

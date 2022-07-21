@@ -18,8 +18,8 @@
                         @csrf
                         @method('PUT')
                         <div class="mb-3">
-                            <label for="editComponentType" class="form-label">Type name</label>
-                            <input type="text" name="type" value="{{ $componentType->type }}" class="form-control" id="editComponentType" required>
+                            <label for="componentType" class="form-label">Type name</label>
+                            <input type="text" name="type" value="{{ $componentType->type }}" class="form-control" id="componentType" required>
                         </div>
                         <div class="float-end">
                             <button type="submit" class="btn btn-primary">Submit</button>

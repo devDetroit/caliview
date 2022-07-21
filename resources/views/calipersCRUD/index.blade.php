@@ -12,28 +12,28 @@
             <div class="card">
                 <div class="card-header">
                     <div class="float-start">
-                        <h2>Components</h2>
+                        <h2>Calipers</h2>
                     </div>
                     <div class="float-end">
-                        <a class="btn btn-success" href="{{ route('components.create') }}"> Create New Component</a>
+                        <a class="btn btn-success" href="{{ route('calipers.create') }}"> Create New Caliper</a>
                     </div>
                 </div>
                 <table class="table table-bordered">
                     <tr>
                         <th>Part No.</th>
-                        <th>Type</th>
-                        <th>Measurements</th>
+                        <th>Family</th>
                         <th width="15%">Edit</th>
                         <th width="15%">Delete</th>
                     </tr>
-                    @foreach ($components as $component)
+                    @foreach ($calipers as $caliper)
                     <tr>
-                        <td>{{ $component->component_number }}</td>
-                        <td>{{ $component->componentTypes->type }}</td>
-                        <td>{{ $component->measure }}</td>
-                        <td><a class="btn btn-primary btn-sm" href="{{ route('components.edit', ['component' => $component->id]) }}" role="button">Edit</a></td>
+                        <td>{{ $caliper->part_number }}</td>
+                        <td>{{ $caliper->caliperFamilies->family }}</td>
+                        <td>{{ $caliper->created_at }}</td>
+                        <td>{{ $caliper->updated_at }}</td>
+                        <td><a class="btn btn-primary btn-sm" href="{{ route('calipers.edit', ['caliper' => $caliper->id]) }}" role="button">Edit</a></td>
                         <td>
-                            <form action="{{ route('components.destroy', ['component' => $component->id]) }}" method="Post">
+                            <form action="{{ route('calipers.destroy', ['caliper' => $caliper->id]) }}" method="Post">
                                 @csrf
                                 @method('DELETE')
                                 <button class="btn btn-danger btn-sm" type="submit">Delete</button>

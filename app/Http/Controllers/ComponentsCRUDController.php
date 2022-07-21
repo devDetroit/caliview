@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Component;
-use App\Models\ComponentType;
+use App\Models\Components;
+use App\Models\ComponentTypes;
 use Illuminate\Http\Request;
 
 class ComponentsCRUDController extends Controller
@@ -16,7 +16,7 @@ class ComponentsCRUDController extends Controller
     public function index()
     {
         return view('componentsCRUD.index', [
-            'components' => Component::with('componentType')->orderBy('id')->get()
+            'components' => Components::with('componentTypes')->orderBy('id')->get()
         ]);
     }
 
@@ -28,7 +28,7 @@ class ComponentsCRUDController extends Controller
     public function create()
     {
         return view('componentsCRUD.create', [
-            'componentTypes' => ComponentType::orderBy('id')->get()
+            'componentTypes' => ComponentTypes::orderBy('id')->get()
         ]);
     }
 
@@ -45,7 +45,7 @@ class ComponentsCRUDController extends Controller
             'componentType' => 'required',
             'measure' => 'required'
         ]);
-        $component = new Component;
+        $component = new Components;
         $component->component_number = $request->componentNumber;
         $component->type_id = $request->componentType;
         $component->measure = $request->measure;
@@ -68,19 +68,21 @@ class ComponentsCRUDController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Component  $component
+     * @param  \App\Models\Components  $component
      * @return \Illuminate\Http\Response
      */
-    public function edit(Component $component)
+    public function edit(Components $component)
     {
-        return view('componentsCRUD.edit', compact('component'));
+        return view('componentsCRUD.edit', compact('component'), [
+            'componentTypes' => ComponentTypes::orderBy('id')->get()
+        ]);
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Component  $id
+     * @param  \App\Models\Components  $id
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
@@ -90,7 +92,7 @@ class ComponentsCRUDController extends Controller
             'componentType' => 'required',
             'measure' => 'required'
         ]);
-        $component = new Component;
+        $component = new Components;
         $component->component_number = $request->componentNumber;
         $component->type_id = $request->componentType;
         $component->measure = $request->measure;
@@ -102,10 +104,10 @@ class ComponentsCRUDController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Component  $component
+     * @param  \App\Models\Components  $component
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Component $component)
+    public function destroy(Components $component)
     {
         $component->delete();
         return redirect()->route('components.index')

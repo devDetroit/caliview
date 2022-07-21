@@ -3,6 +3,8 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ComponentTypesCRUDController;
 use App\Http\Controllers\ComponentsCRUDController;
+use App\Http\Controllers\CaliperFamiliesCRUDController;
+use App\Http\Controllers\CalipersCRUDController;
 
 /*
 |--------------------------------------------------------------------------
@@ -24,3 +26,5 @@ Auth::routes();
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 Route::resource('componentTypes', App\Http\Controllers\ComponentTypesCRUDController::class);
 Route::resource('components', App\Http\Controllers\ComponentsCRUDController::class);
+Route::resource('caliperFamilies', App\Http\Controllers\CaliperFamiliesCRUDController::class);
+Route::resource('calipers', App\Http\Controllers\CalipersCRUDController::class);

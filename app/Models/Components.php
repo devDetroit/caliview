@@ -5,16 +5,17 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class ComponentType extends Model
+class Components extends Model
 {
     use HasFactory;
-    
+
     /**
-     * Declare relationship One to Many with Component
+     * Declare relationship Many to One with Component Types
      *
      * @return relationship
      */
-    public function component() {
-        return $this->hasMany(Component::class, 'type_id');
+    public function componentTypes()
+    {
+        return $this->belongsTo(ComponentTypes::class, 'type_id');
     }
 }

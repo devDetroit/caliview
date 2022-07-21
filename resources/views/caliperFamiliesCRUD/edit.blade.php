@@ -11,20 +11,21 @@
         <div class="col-md-8">
             <div class="card">
                 <div class="card-header">
-                    New Component Type
+                    Edit Caliper Family
                 </div>
                 <div class="card-body">
-                    <form action="{{ route('componentTypes.store') }}" method="POST">
+                    <form action="{{ route('caliperFamilies.update', ['caliperFamily' => $caliperFamily->id]) }}" method="POST">
                         @csrf
+                        @method('PUT')
                         <div class="mb-3">
-                            <label for="componentType" class="form-label">Type name</label>
-                            <input type="text" name="type" class="form-control" id="componentType" required>
+                            <label for="caliperFamily" class="form-label">Family name</label>
+                            <input type="text" name="family" value="{{ $caliperFamily->family }}" class="form-control" id="caliperFamily" required>
                         </div>
                         <div class="float-end">
                             <button type="submit" class="btn btn-primary">Submit</button>
                         </div>
                         <div class="float-start">
-                            <a class="btn btn-danger" href="{{ route('componentTypes.index') }}"> Cancel</a>
+                            <a class="btn btn-danger" href="{{ route('caliperFamilies.index') }}"> Cancel</a>
                         </div>
                     </form>
                 </div>

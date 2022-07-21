@@ -19,7 +19,7 @@ class CreateCaliperComponentsTable extends Migration
             $table->integer('quantity');
             $table->timestamps();
             $table->foreignId('created_by')->constrained('users');
-            $table->foreignId('update_by')->constrained('users');
+            $table->foreignId('updated_by')->constrained('users');
         });
     }
 

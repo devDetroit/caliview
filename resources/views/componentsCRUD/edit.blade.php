@@ -11,23 +11,28 @@
         <div class="col-md-8">
             <div class="card">
                 <div class="card-header">
-                    Edit Component Type
+                    Edit Component
                 </div>
                 <div class="card-body">
                     <form action="{{ route('components.update', ['component' => $component->id]) }}" method="POST">
                         @csrf
                         @method('PUT')
                         <div class="mb-3">
-                            <label for="editComponent" class="form-label">Part No.</label>
-                            <input type="text" name="type" value="{{ $components->component_number }}" class="form-control" id="editComponent" required>
+                            <label for="componentNumber" class="form-label">Part No.</label>
+                            <input type="text" name="componentNumber" value="{{ $component->component_number }}" class="form-control" id="componentNumber" required>
                         </div>
                         <div class="mb-3">
-                            <label for="editType" class="form-label">Type</label>
-                            <input type="text" name="type" value="{{ $components->type_id }}" class="form-control" id="editType" required>
+                            <label for="componentType" class="form-label">Type</label>
+                            <select name="componentType" class="form-select" id="componentType" required>
+                                <option selected value="">Select a component type</option>
+                                @foreach($componentTypes as $type)
+                                <option value="{{ $type->id }}">{{$type->type}}</option>
+                                @endforeach
+                            </select>
                         </div>
                         <div class="mb-3">
-                            <label for="editMeasure" class="form-label">Measurements</label>
-                            <input type="text" name="type" value="{{ $components->measure }}" class="form-control" id="editMeasure" required>
+                            <label for="measurement" class="form-label">Measurements</label>
+                            <input type="text" name="measure" value="{{ $component->measure }}" class="form-control" id="measurement" required>
                         </div>
                         <div class="float-end">
                             <button type="submit" class="btn btn-primary">Submit</button>
