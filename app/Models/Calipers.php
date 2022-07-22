@@ -18,4 +18,24 @@ class Calipers extends Model
     {
         return $this->belongsTo(CaliperFamilies::class, 'family_id');
     }
+
+    /**
+     * Declare relationship Many to One with Users on the created_by column
+     *
+     * @return relationship
+     */
+    public function createdBy()
+    {
+        return $this->belongsTo(User::class, 'created_by');
+    }
+
+    /**
+     * Declare relationship Many to One with Users on the updated_by column
+     *
+     * @return relationship
+     */
+    public function updatedBy()
+    {
+        return $this->belongsTo(User::class, 'updated_by');
+    }
 }

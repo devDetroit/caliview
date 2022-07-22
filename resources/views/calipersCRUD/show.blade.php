@@ -11,34 +11,25 @@
         <div class="col-md-4">
             <div class="card">
                 <div class="card-header">
-                    <strong>Edit Caliper {{ $caliper->part_number }}</strong>
+                    <strong>{{ $caliper->part_number }} Caliper Details</strong>
                 </div>
                 <div class="card-body">
-                    <form action="{{ route('calipers.update', ['caliper' => $caliper->id]) }}" method="POST">
-                        @csrf
-                        @method('PUT')
+                    <form>
                         <div class="mb-3">
                             <label for="caliperNumber" class="form-label">Part No.</label>
-                            <input type="text" name="caliperNumber" value="{{ $caliper->part_number }}" class="form-control" id="caliperNumber" required>
+                            <input type="text" name="caliperNumber" value="{{ $caliper->part_number }}" class="form-control" id="caliperNumber" disabled>
                         </div>
                         <div class="mb-3">
                             <label for="caliperFamily" class="form-label">Family</label>
-                            <select name="caliperFamily" class="form-select" id="caliperFamily" required>
-                                <option selected value="">Select a Family</option>
-                                @foreach($caliperFamilies as $family)
-                                <option value="{{ $family->id }}">{{$family->family}}</option>
-                                @endforeach
+                            <select name="caliperFamily" class="form-select" id="caliperFamily" disabled>
+                                <option value="{{ $caliper->caliperFamilies->id }}">{{$caliper->caliperFamilies->family}}</option>
                             </select>
                         </div>
-                        <div class="mb-3">
-                            <label for="caliperPhotosMultiple" class="form-label">Upload Photos</label>
-                            <input name="caliperPhotos" class="form-control" type="file" id="caliperPhotosMultiple" multiple>
-                        </div>
                         <div class="float-end">
-                            <button type="submit" class="btn btn-primary">Submit</button>
+                            <a class="btn btn-primary btn" href="{{ route('calipers.edit', ['caliper' => $caliper->id]) }}" role="button">Edit</a>
                         </div>
                         <div class="float-start">
-                            <a class="btn btn-danger" href="{{ route('calipers.show', ['caliper' => $caliper->id]) }}">Cancel</a>
+                            <a class="btn btn-danger" href="{{ route('calipers.index') }}">Go Back</a>
                         </div>
                     </form>
                 </div>
@@ -50,13 +41,6 @@
                     <div class="card">
                         <div class="card-header">
                             <strong>Photo:</strong>
-                            <div class="float-end">
-                                <form action="{{ route('calipers.destroy', ['caliper' => $caliper->id]) }}" method="Post">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button class="btn btn-danger btn-sm" type="submit">Delete</button>
-                                </form>
-                            </div>
                         </div>
                         <img src="..." class="card-img-top">
                         <div class="card-body">

@@ -11,7 +11,7 @@
         <div class="col-md-8">
             <div class="card">
                 <div class="card-header">
-                    New Caliper
+                    <strong>New Caliper</strong>
                 </div>
                 <div class="card-body">
                     <form action="{{ route('calipers.store') }}" method="POST">
@@ -28,6 +28,10 @@
                                 <option value="{{ $family->id }}">{{$family->family}}</option>
                                 @endforeach
                             </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="caliperPhotosMultiple" class="form-label">Upload Photos</label>
+                            <input name="caliperPhotos[]" class="form-control" type="file" id="caliperPhotosMultiple" multiple>
                         </div>
                         <div class="float-end">
                             <button type="submit" class="btn btn-primary">Submit</button>

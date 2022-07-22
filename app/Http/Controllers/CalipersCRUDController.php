@@ -4,7 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Models\Calipers;
 use App\Models\CaliperFamilies;
+use App\Models\CaliperPhotos;
 use Illuminate\Http\Request;
+
+use function PHPUnit\Framework\isEmpty;
+use function PHPUnit\Framework\isNull;
 
 class CalipersCRUDController extends Controller
 {
@@ -16,7 +20,7 @@ class CalipersCRUDController extends Controller
     public function index()
     {
         return view('calipersCRUD.index', [
-            'calipers' => Calipers::with('caliperFamilies')->orderBy('id')->get()
+            'calipers' => Calipers::with(['caliperFamilies', 'createdBy', 'updatedBy'])->orderBy('id')->get()
         ]);
     }
 
@@ -49,7 +53,19 @@ class CalipersCRUDController extends Controller
         $caliper->family_id = $request->caliperFamily;
         $caliper->created_by = auth()->user()->id;
         $caliper->updated_by = auth()->user()->id;
-        $caliper->save();
+        //$caliper->save();
+        if(count($request->caliperPhotos) > 0)
+        {
+            $photos = new CaliperPhotos;
+            foreach($request->caliperPhotos as $reqPhoto)
+            {
+                /* $photos->caliper_id = $caliper->id;
+                $photos->path = '/storage/calipers/' . $caliper->part_number . date('YmdHis') . $reqPhoto->extension();
+                $photos->created_by = auth()->user()->id;
+                $photos->updated_by = auth()->user()->id; */
+                $request->file($reqPhoto)->storeAs('calipers', $request->caliperNumber .''. date('YmdHis') .''. $reqPhoto->extension());
+            }
+        }
         return redirect()->route('calipers.index')
             ->with('success', 'The caliper has been created successfully.');
     }
@@ -57,12 +73,12 @@ class CalipersCRUDController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param  \App\Models\Calipers  $caliper
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Calipers $caliper)
     {
-        //
+        return view('calipersCRUD.show', compact('caliper'));
     }
 
     /**
@@ -96,7 +112,7 @@ class CalipersCRUDController extends Controller
         $caliper->family_id = $request->caliperFamily;
         $caliper->updated_by = auth()->user()->id;
         $caliper->save();
-        return redirect()->route('calipers.index')
+        return redirect()->route('calipers.show', compact('caliper'))
             ->with('success', 'The caliper has been updated successfully.');
     }
 

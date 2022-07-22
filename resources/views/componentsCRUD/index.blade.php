@@ -15,7 +15,7 @@
                         <h2>Components</h2>
                     </div>
                     <div class="float-end">
-                        <a class="btn btn-success" href="{{ route('components.create') }}"> Create New Component</a>
+                        <a class="btn btn-success" href="{{ route('components.create') }}">Create New Component</a>
                     </div>
                 </div>
                 <table class="table table-bordered">

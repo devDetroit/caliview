@@ -25,7 +25,7 @@
                             <button type="submit" class="btn btn-primary">Submit</button>
                         </div>
                         <div class="float-start">
-                            <a class="btn btn-danger" href="{{ route('caliperFamilies.index') }}"> Cancel</a>
+                            <a class="btn btn-danger" href="{{ route('caliperFamilies.index') }}">Cancel</a>
                         </div>
                     </form>
                 </div>
