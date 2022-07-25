@@ -20,6 +20,16 @@ class Calipers extends Model
     }
 
     /**
+     * Declare relationship Many to One with Caliper Photos
+     *
+     * @return relationship
+     */
+    public function caliperPhotos()
+    {
+        return $this->hasMany(CaliperPhotos::class, 'caliper_id');
+    }
+
+    /**
      * Declare relationship Many to One with Users on the created_by column
      *
      * @return relationship

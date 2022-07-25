@@ -37,12 +37,13 @@
         </div>
         <div class="col-md-8">
             <div class="row row-cols-1 row-cols-md-3 g-4">
+                @foreach($caliperPhotos as $photo)
                 <div class="col">
                     <div class="card">
                         <div class="card-header">
-                            <strong>Photo:</strong>
+                            <strong>Photo: {{ $caliper->part_number }}{{ $photo->id }}</strong>
                         </div>
-                        <img src="..." class="card-img-top">
+                        <img src="/storage/app/{{ $photo->path }}" class="card-img-top">
                         <div class="card-body">
                             <h5 class="card-title">Notes:</h5>
                             <p class="card-text">No notes available</p>
@@ -52,6 +53,7 @@
                         </div>
                     </div>
                 </div>
+                @endforeach
             </div>
         </div>
     </div>

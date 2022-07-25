@@ -14,7 +14,7 @@
                     <strong>Edit Caliper {{ $caliper->part_number }}</strong>
                 </div>
                 <div class="card-body">
-                    <form action="{{ route('calipers.update', ['caliper' => $caliper->id]) }}" method="POST">
+                    <form action="{{ route('calipers.update', ['caliper' => $caliper->id]) }}" method="POST" enctype="multipart/form-data">
                         @csrf
                         @method('PUT')
                         <div class="mb-3">
@@ -24,15 +24,19 @@
                         <div class="mb-3">
                             <label for="caliperFamily" class="form-label">Family</label>
                             <select name="caliperFamily" class="form-select" id="caliperFamily" required>
-                                <option selected value="">Select a Family</option>
+                                <option value="">Select a Family</option>
                                 @foreach($caliperFamilies as $family)
+                                @if($caliper->family_id == $family->id)
+                                <option selected value="{{ $family->id }}">{{$family->family}}</option>
+                                @else
                                 <option value="{{ $family->id }}">{{$family->family}}</option>
+                                @endif
                                 @endforeach
                             </select>
                         </div>
                         <div class="mb-3">
                             <label for="caliperPhotosMultiple" class="form-label">Upload Photos</label>
-                            <input name="caliperPhotos" class="form-control" type="file" id="caliperPhotosMultiple" multiple>
+                            <input name="caliperPhotos[]" class="form-control" type="file" id="caliperPhotosMultiple" multiple>
                         </div>
                         <div class="float-end">
                             <button type="submit" class="btn btn-primary">Submit</button>

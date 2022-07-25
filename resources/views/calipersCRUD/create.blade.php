@@ -14,7 +14,7 @@
                     <strong>New Caliper</strong>
                 </div>
                 <div class="card-body">
-                    <form action="{{ route('calipers.store') }}" method="POST">
+                    <form action="{{ route('calipers.store') }}" method="POST" enctype="multipart/form-data">
                         @csrf
                         <div class="mb-3">
                             <label for="caliperNumber" class="form-label">Part No.</label>
@@ -31,7 +31,7 @@
                         </div>
                         <div class="mb-3">
                             <label for="caliperPhotosMultiple" class="form-label">Upload Photos</label>
-                            <input name="caliperPhotos[]" class="form-control" type="file" id="caliperPhotosMultiple" multiple>
+                            <input name="caliperPhotos[]" class="form-control" type="file" id="caliperPhotosMultiple"multiple>
                         </div>
                         <div class="float-end">
                             <button type="submit" class="btn btn-primary">Submit</button>

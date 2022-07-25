@@ -5,10 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Calipers;
 use App\Models\CaliperFamilies;
 use App\Models\CaliperPhotos;
+use App\Http\Controllers\CaliperPhotosCRUDController;
 use Illuminate\Http\Request;
-
-use function PHPUnit\Framework\isEmpty;
-use function PHPUnit\Framework\isNull;
 
 class CalipersCRUDController extends Controller
 {
@@ -53,17 +51,17 @@ class CalipersCRUDController extends Controller
         $caliper->family_id = $request->caliperFamily;
         $caliper->created_by = auth()->user()->id;
         $caliper->updated_by = auth()->user()->id;
-        //$caliper->save();
-        if(count($request->caliperPhotos) > 0)
+        $caliper->save();
+        if(isset($request->caliperPhotos[0]))
         {
-            $photos = new CaliperPhotos;
-            foreach($request->caliperPhotos as $reqPhoto)
+            foreach($request->caliperPhotos as $photo)
             {
-                /* $photos->caliper_id = $caliper->id;
-                $photos->path = '/storage/calipers/' . $caliper->part_number . date('YmdHis') . $reqPhoto->extension();
+                $photos = new CaliperPhotos;
+                $photos->caliper_id = $caliper->id;
+                $photos->path = $photo->storeAs('calipers', $request->caliperNumber .'_'. date('YmdHis') .'.'. $photo->extension());
                 $photos->created_by = auth()->user()->id;
-                $photos->updated_by = auth()->user()->id; */
-                $request->file($reqPhoto)->storeAs('calipers', $request->caliperNumber .''. date('YmdHis') .''. $reqPhoto->extension());
+                $photos->updated_by = auth()->user()->id;
+                $photos->save();
             }
         }
         return redirect()->route('calipers.index')
@@ -78,7 +76,11 @@ class CalipersCRUDController extends Controller
      */
     public function show(Calipers $caliper)
     {
-        return view('calipersCRUD.show', compact('caliper'));
+        dd($caliper->get());
+        
+        return view('calipersCRUD.show', [
+            'caliper' => $caliper::with('caliperPhotos')->orderBy('id')->get()
+        ]);
     }
 
     /**
@@ -111,6 +113,18 @@ class CalipersCRUDController extends Controller
         $caliper->part_number = $request->caliperNumber;
         $caliper->family_id = $request->caliperFamily;
         $caliper->updated_by = auth()->user()->id;
+        if(isset($request->caliperPhotos[0]))
+        {
+            foreach($request->caliperPhotos as $photo)
+            {
+                $photos = new CaliperPhotos;
+                $photos->caliper_id = $caliper->id;
+                $photos->path = $photo->storeAs('calipers', $request->caliperNumber .'_'. date('YmdHis') .'.'. $photo->extension());
+                $photos->created_by = auth()->user()->id;
+                $photos->updated_by = auth()->user()->id;
+                $photos->save();
+            }
+        }
         $caliper->save();
         return redirect()->route('calipers.show', compact('caliper'))
             ->with('success', 'The caliper has been updated successfully.');
@@ -124,6 +138,7 @@ class CalipersCRUDController extends Controller
      */
     public function destroy(Calipers $caliper)
     {
+        $caliperPhotos = (new CaliperPhotos)->destroyAll($caliper);
         $caliper->delete();
         return redirect()->route('calipers.index')
             ->with('success', 'The caliper has been deleted successfully.');
