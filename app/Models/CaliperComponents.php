@@ -8,4 +8,44 @@ use Illuminate\Database\Eloquent\Model;
 class CaliperComponents extends Model
 {
     use HasFactory;
+
+    /**
+     * Declare relationship Many to One with Components
+     *
+     * @return relationship
+     */
+    public function components()
+    {
+        return $this->belongsTo(Components::class, 'component_id');
+    }
+
+    /**
+     * Declare relationship Many to One with Calipers
+     *
+     * @return relationship
+     */
+    public function calipers()
+    {
+        return $this->belongsTo(Calipers::class, 'caliper_id');
+    }
+
+    /**
+     * Declare relationship Many to One with Users on the created_by column
+     *
+     * @return relationship
+     */
+    public function createdBy()
+    {
+        return $this->belongsTo(User::class, 'created_by');
+    }
+
+    /**
+     * Declare relationship Many to One with Users on the updated_by column
+     *
+     * @return relationship
+     */
+    public function updatedBy()
+    {
+        return $this->belongsTo(User::class, 'updated_by');
+    }
 }

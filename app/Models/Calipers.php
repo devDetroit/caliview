@@ -20,7 +20,7 @@ class Calipers extends Model
     }
 
     /**
-     * Declare relationship Many to One with Caliper Photos
+     * Declare relationship One to Many with Caliper Photos
      *
      * @return relationship
      */
@@ -47,5 +47,15 @@ class Calipers extends Model
     public function updatedBy()
     {
         return $this->belongsTo(User::class, 'updated_by');
+    }
+
+    /**
+     * Declare relationship One to Many with Caliper Components
+     *
+     * @return relationship
+     */
+    public function caliperComponents()
+    {
+        return $this->hasMany(CaliperComponents::class, 'caliper_id');
     }
 }

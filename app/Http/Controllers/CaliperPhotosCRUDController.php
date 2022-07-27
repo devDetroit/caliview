@@ -83,23 +83,7 @@ class CaliperPhotosCRUDController extends Controller
     {
         $caliper = Calipers::find($caliperPhoto->caliper_id);
         $caliperPhoto->delete();
-        return redirect()->route("calipers.edit, ['caliper' => $caliper->id]")
+        return redirect()->route('calipers.edit', ['caliper' => $caliper->id])
             ->with('success', 'The photo has been deleted successfully.');
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroyAll(Calipers $caliper)
-    {
-        $caliperPhoto[] = Calipers::where('caliper_id', $caliper->id);
-        dd($caliperPhoto);
-        foreach($caliperPhoto as $photo)
-        {
-            $photo->delete();
-        }
     }
 }

@@ -33,6 +33,25 @@
                             <label for="caliperPhotosMultiple" class="form-label">Upload Photos</label>
                             <input name="caliperPhotos[]" class="form-control" type="file" id="caliperPhotosMultiple"multiple>
                         </div>
+                        <div class="row mb-3">
+                            <div class="col-sm-4">
+                                <label for="componentNo" class="form-label">Component</label>
+                                <select name="componentNo" class="form-select" id="componentNo" required>
+                                    <option selected value="">Select a Component</option>
+                                    @foreach($components as $component)
+                                    <option value="{{ $component->id }}">{{$component->component_number}}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div class="col-sm-6">
+                                <label for="componentMeasure" class="form-label">Measurements</label>
+                                <input type="text" name="componentMeasure" class="form-control" id="componentMeasure" readonly>
+                            </div>
+                            <div class="col-sm-2">
+                                <label for="componentQuantity" class="form-label">Quantity</label>
+                                <input type="text" name="componentQuantity" class="form-control" id="componentQuantity">
+                            </div>
+                        </div>
                         <div class="float-end">
                             <button type="submit" class="btn btn-primary">Submit</button>
                         </div>
@@ -45,4 +64,15 @@
         </div>
     </div>
 </div>
+
+<script>
+    var component = document.getElementById("componentNo");
+    component.addEventListener("change", function()
+    {
+        if(component.value == "")
+            document.getElementById("componentMeasure").value = "";
+        else
+            document.getElementById("componentMeasure").value = '<?=$component->measure?>';
+    });
+</script>
 @endsection

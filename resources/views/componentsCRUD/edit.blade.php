@@ -24,9 +24,13 @@
                         <div class="mb-3">
                             <label for="componentType" class="form-label">Type</label>
                             <select name="componentType" class="form-select" id="componentType" required>
-                                <option selected value="">Select a component type</option>
+                                <option value="">Select a component type</option>
                                 @foreach($componentTypes as $type)
+                                @if($component->type_id == $type->id)
+                                <option selected value="{{ $type->id }}">{{$type->type}}</option>
+                                @else
                                 <option value="{{ $type->id }}">{{$type->type}}</option>
+                                @endif
                                 @endforeach
                             </select>
                         </div>

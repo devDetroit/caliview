@@ -43,7 +43,7 @@
                         <div class="card-header">
                             <strong>Photo: {{ $caliper->part_number }}{{ $photo->id }}</strong>
                         </div>
-                        <img src="/storage/app/{{ $photo->path }}" class="card-img-top">
+                        <a href="/storage/calipers/{{ $photo->image }}" target="_blank"><img src="/storage/calipers/{{ $photo->image }}" class="card-img-top"></a>
                         <div class="card-body">
                             <h5 class="card-title">Notes:</h5>
                             <p class="card-text">No notes available</p>

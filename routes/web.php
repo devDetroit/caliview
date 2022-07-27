@@ -5,6 +5,7 @@ use App\Http\Controllers\ComponentTypesCRUDController;
 use App\Http\Controllers\ComponentsCRUDController;
 use App\Http\Controllers\CaliperFamiliesCRUDController;
 use App\Http\Controllers\CalipersCRUDController;
+use App\Http\Controllers\CaliperPhotosCRUDController;
 
 /*
 |--------------------------------------------------------------------------
@@ -28,3 +29,4 @@ Route::resource('componentTypes', App\Http\Controllers\ComponentTypesCRUDControl
 Route::resource('components', App\Http\Controllers\ComponentsCRUDController::class);
 Route::resource('caliperFamilies', App\Http\Controllers\CaliperFamiliesCRUDController::class);
 Route::resource('calipers', App\Http\Controllers\CalipersCRUDController::class);
+Route::resource('caliperPhotos', App\Http\Controllers\CaliperPhotosCRUDController::class);

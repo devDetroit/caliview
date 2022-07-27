@@ -5,7 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Calipers;
 use App\Models\CaliperFamilies;
 use App\Models\CaliperPhotos;
-use App\Http\Controllers\CaliperPhotosCRUDController;
+use App\Models\CaliperComponents;
+use App\Models\Components;
 use Illuminate\Http\Request;
 
 class CalipersCRUDController extends Controller
@@ -30,7 +31,8 @@ class CalipersCRUDController extends Controller
     public function create()
     {
         return view('calipersCRUD.create', [
-            'caliperFamilies' => CaliperFamilies::orderBy('id')->get()
+            'caliperFamilies' => CaliperFamilies::orderBy('id')->get(),
+            'components' => Components::orderBy('id')->get()
         ]);
     }
 
@@ -57,13 +59,22 @@ class CalipersCRUDController extends Controller
             foreach($request->caliperPhotos as $photo)
             {
                 $photos = new CaliperPhotos;
+                $photoName = $request->caliperNumber .'_'. date('YmdHis') .'.'. $photo->extension();
                 $photos->caliper_id = $caliper->id;
-                $photos->path = $photo->storeAs('calipers', $request->caliperNumber .'_'. date('YmdHis') .'.'. $photo->extension());
+                $photos->image = $photoName;
                 $photos->created_by = auth()->user()->id;
                 $photos->updated_by = auth()->user()->id;
+                $photo->storeAs('public/calipers', $photoName);
                 $photos->save();
             }
         }
+        $caliperComp = new CaliperComponents;
+        $caliperComp->caliper_id = $caliper->id;
+        $caliperComp->component_id = $request->componentNo;
+        $caliperComp->quantity = $request->componentQuantity;
+        $caliperComp->created_by = auth()->user()->id;
+        $caliperComp->updated_by = auth()->user()->id;
+        $caliperComp->save();
         return redirect()->route('calipers.index')
             ->with('success', 'The caliper has been created successfully.');
     }
@@ -76,10 +87,8 @@ class CalipersCRUDController extends Controller
      */
     public function show(Calipers $caliper)
     {
-        dd($caliper->get());
-        
-        return view('calipersCRUD.show', [
-            'caliper' => $caliper::with('caliperPhotos')->orderBy('id')->get()
+        return view('calipersCRUD.show', compact('caliper'), [
+            'caliperPhotos' => CaliperPhotos::where('caliper_id', $caliper->id)->orderBy('id')->get()
         ]);
     }
 
@@ -92,7 +101,9 @@ class CalipersCRUDController extends Controller
     public function edit(Calipers $caliper)
     {
         return view('calipersCRUD.edit', compact('caliper'), [
-            'caliperFamilies' => CaliperFamilies::orderBy('id')->get()
+            'caliperFamilies' => CaliperFamilies::orderBy('id')->get(),
+            'caliperPhotos' => CaliperPhotos::where('caliper_id', $caliper->id)->orderBy('id')->get(),
+            'components' => Components::orderBy('id')->get()
         ]);
     }
 
@@ -118,10 +129,12 @@ class CalipersCRUDController extends Controller
             foreach($request->caliperPhotos as $photo)
             {
                 $photos = new CaliperPhotos;
+                $photoName = $request->caliperNumber .'_'. date('YmdHis') .'.'. $photo->extension();
                 $photos->caliper_id = $caliper->id;
-                $photos->path = $photo->storeAs('calipers', $request->caliperNumber .'_'. date('YmdHis') .'.'. $photo->extension());
+                $photos->image = $photoName;
                 $photos->created_by = auth()->user()->id;
                 $photos->updated_by = auth()->user()->id;
+                $photo->storeAs('public/calipers', $photoName);
                 $photos->save();
             }
         }
@@ -138,7 +151,6 @@ class CalipersCRUDController extends Controller
      */
     public function destroy(Calipers $caliper)
     {
-        $caliperPhotos = (new CaliperPhotos)->destroyAll($caliper);
         $caliper->delete();
         return redirect()->route('calipers.index')
             ->with('success', 'The caliper has been deleted successfully.');
