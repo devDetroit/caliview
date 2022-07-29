@@ -21,10 +21,24 @@
                         </div>
                         <div class="mb-3">
                             <label for="caliperFamily" class="form-label">Family</label>
-                            <select name="caliperFamily" class="form-select" id="caliperFamily" disabled>
-                                <option value="{{ $caliper->caliperFamilies->id }}">{{$caliper->caliperFamilies->family}}</option>
-                            </select>
+                            <input type="text" name="caliperFamily" value="{{ $caliper->caliperFamilies->family }}" class="form-control" id="caliperFamily" disabled>
                         </div>
+                        @foreach($caliperComponents as $caliComp)
+                        <div class="row mb-3">
+                            <div class="col-sm-4">
+                                <label for="componentNo" class="form-label">Component</label>
+                                <input type="text" name="componentNo" value="{{ $caliComp->components->component_number }}" class="form-control" id="componentNo" disabled>
+                            </div>
+                            <div class="col-sm-5">
+                                <label for="componentMeasure" class="form-label">Measurements</label>
+                                <input type="text" name="componentMeasure" value="{{ $caliComp->components->measure }}" class="form-control" id="componentMeasure" readonly>
+                            </div>
+                            <div class="col-sm-3">
+                                <label for="componentQuantity" class="form-label">Quantity</label>
+                                <input type="text" name="componentQuantity" value="{{ $caliComp->quantity }}" class="form-control" id="componentQuantity" readonly>
+                            </div>
+                        </div>
+                        @endforeach
                         <div class="float-end">
                             <a class="btn btn-primary btn" href="{{ route('calipers.edit', ['caliper' => $caliper->id]) }}" role="button">Edit</a>
                         </div>
