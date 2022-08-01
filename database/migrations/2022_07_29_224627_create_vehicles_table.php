@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateCaliperFamiliesTable extends Migration
+class CreateVehiclesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,9 +13,12 @@ class CreateCaliperFamiliesTable extends Migration
      */
     public function up()
     {
-        Schema::create('caliper_families', function (Blueprint $table) {
+        Schema::create('vehicles', function (Blueprint $table) {
             $table->id();
-            $table->string('family')->unique();
+            $table->year('year');
+            $table->string('maker', 32);
+            $table->string('model', 32);
+            $table->string('engine', 32);
             $table->timestamps();
         });
     }
@@ -27,6 +30,6 @@ class CreateCaliperFamiliesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('caliper_families');
+        Schema::dropIfExists('vehicles');
     }
 }

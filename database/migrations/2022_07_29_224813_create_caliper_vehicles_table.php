@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateCalipersTable extends Migration
+class CreateCaliperVehiclesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,15 +13,10 @@ class CreateCalipersTable extends Migration
      */
     public function up()
     {
-        Schema::create('calipers', function (Blueprint $table) {
+        Schema::create('caliper_vehicles', function (Blueprint $table) {
             $table->id();
-            $table->string('jh_part_number')->unique();
-            $table->string('cardone_part_number')->unique();
-            $table->string('centric_part_number')->unique();
-            $table->foreignId('family_id')->nullOnDelete()->constrained('caliper_families');
-            $table->string('casting1');
-            $table->string('casting2');
-            $table->string('bracket_casting');
+            $table->foreignid('caliper_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('vehicle_id')->constrained()->cascadeOnDelete();
             $table->timestamps();
             $table->foreignId('created_by')->constrained('users');
             $table->foreignId('updated_by')->constrained('users');
@@ -35,6 +30,6 @@ class CreateCalipersTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('calipers');
+        Schema::dropIfExists('caliper_vehicles');
     }
 }

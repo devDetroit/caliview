@@ -6,6 +6,7 @@ use App\Http\Controllers\ComponentsCRUDController;
 use App\Http\Controllers\CaliperFamiliesCRUDController;
 use App\Http\Controllers\CalipersCRUDController;
 use App\Http\Controllers\CaliperPhotosCRUDController;
+use App\Http\Controllers\VehiclesCRUDController;
 
 /*
 |--------------------------------------------------------------------------
@@ -30,3 +31,4 @@ Route::resource('components', App\Http\Controllers\ComponentsCRUDController::cla
 Route::resource('caliperFamilies', App\Http\Controllers\CaliperFamiliesCRUDController::class);
 Route::resource('calipers', App\Http\Controllers\CalipersCRUDController::class);
 Route::resource('caliperPhotos', App\Http\Controllers\CaliperPhotosCRUDController::class);
+Route::resource('vehicles', App\Http\Controllers\VehiclesCRUDController::class);

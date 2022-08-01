@@ -49,6 +49,8 @@ class ComponentsCRUDController extends Controller
         $component->component_number = $request->componentNumber;
         $component->type_id = $request->componentType;
         $component->measure = $request->measure;
+        $component->created_by = auth()->user()->id;
+        $component->updated_by = auth()->user()->id;
         $component->save();
         return redirect()->route('components.index')
             ->with('success', 'The component has been created successfully.');
@@ -92,10 +94,11 @@ class ComponentsCRUDController extends Controller
             'componentType' => 'required',
             'measure' => 'required'
         ]);
-        $component = new Components;
+        $component = Components::find($id);
         $component->component_number = $request->componentNumber;
         $component->type_id = $request->componentType;
         $component->measure = $request->measure;
+        $component->updated_by = auth()->user()->id;
         $component->save();
         return redirect()->route('components.index')
             ->with('success', 'The component has been updated successfully.');

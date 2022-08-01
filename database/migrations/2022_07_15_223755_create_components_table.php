@@ -15,10 +15,12 @@ class CreateComponentsTable extends Migration
     {
         Schema::create('components', function (Blueprint $table) {
             $table->id();
-            $table->string('component_number');
-            $table->foreignId('type_id')->constrained('component_types');
+            $table->string('component_number')->unique();
+            $table->foreignId('type_id')->nullOnDelete()->constrained('component_types');
             $table->string('measure');
             $table->timestamps();
+            $table->foreignId('created_by')->constrained('users');
+            $table->foreignId('updated_by')->constrained('users');
         });
     }
 
