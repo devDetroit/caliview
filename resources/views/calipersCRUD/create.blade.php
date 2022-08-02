@@ -16,9 +16,19 @@
                 <div class="card-body">
                     <form action="{{ route('calipers.store') }}" method="POST" enctype="multipart/form-data" id="mainForm">
                         @csrf
-                        <div class="mb-3">
-                            <label for="caliperNumber" class="form-label">Part No.</label>
-                            <input type="text" name="caliperNumber" class="form-control" id="caliperNumber" required>
+                        <div class="row mb-3">
+                            <div class="col-sm-4">
+                                <label for="jhPN" class="form-label">JH Part No.</label>
+                                <input type="text" name="jhPN" class="form-control" id="jhPN" required>
+                            </div>
+                            <div class="col-sm-4">
+                                <label for="cardonePN" class="form-label">Cardone Part No.</label>
+                                <input type="text" name="cardonePN" class="form-control" id="cardonePN" required>
+                            </div>
+                            <div class="col-sm-4">
+                                <label for="centricPN" class="form-label">Centric Part No.</label>
+                                <input type="text" name="centricPN" class="form-control" id="centricPN" required>
+                            </div>
                         </div>
                         <div class="mb-3">
                             <label for="caliperFamily" class="form-label">Family</label>
@@ -28,6 +38,18 @@
                                 <option value="{{ $family->id }}">{{ $family->family }}</option>
                                 @endforeach
                             </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="casting1" class="form-label">Casting Number 1</label>
+                            <input type="text" name="casting1" class="form-control" id="casting1">
+                        </div>
+                        <div class="mb-3">
+                            <label for="casting2" class="form-label">Casting Number 2</label>
+                            <input type="text" name="casting2" class="form-control" id="casting2">
+                        </div>
+                        <div class="mb-3">
+                            <label for="bracketCasting" class="form-label">Bracket Casting Number</label>
+                            <input type="text" name="bracketCasting" class="form-control" id="bracketCasting">
                         </div>
                         <div class="mb-3">
                             <label for="caliperPhotosMultiple" class="form-label">Upload Photos</label>
@@ -52,7 +74,7 @@
                                 <input type="text" name="componentQuantity" class="form-control" id="componentQuantity">
                             </div>
                             <div class="col-sm-1 mt-4">
-                                <a class="btn btn-success btn-sm" onclick="addComponents();">+</a>
+                                <a class="btn btn-success btn-sm" onclick="addComponents()">+</a>
                             </div>
                         </div>
                         <div class="float-end">
@@ -69,6 +91,7 @@
 </div>
 
 <script>
+    // Autofill measure when selcting a component and switch requirement on quantity
     var component = document.getElementById("componentNo");
     component.addEventListener("change", function()
     {
@@ -84,6 +107,7 @@
         }
     });
 
+    // Add component forms
     var compCount = 1;
     function addComponents()
     {

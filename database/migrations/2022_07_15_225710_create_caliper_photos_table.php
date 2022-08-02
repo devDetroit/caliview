@@ -17,7 +17,7 @@ class CreateCaliperPhotosTable extends Migration
             $table->id();
             $table->foreignId('caliper_id')->constrained()->cascadeOnDelete();
             $table->string('filename');
-            $table->string('description', 500);
+            $table->string('description', 500)->nullable();
             $table->timestamps();
             $table->foreignId('created_by')->constrained('users');
             $table->foreignId('updated_by')->constrained('users');

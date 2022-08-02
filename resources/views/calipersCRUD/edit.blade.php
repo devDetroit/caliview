@@ -11,15 +11,25 @@
         <div class="col-md-4">
             <div class="card">
                 <div class="card-header">
-                    <strong>Edit Caliper {{ $caliper->part_number }}</strong>
+                    <strong>Edit Caliper {{ $caliper->jh_part_number }} / {{ $caliper->cardone_part_number }} / {{ $caliper->centric_part_number }}</strong>
                 </div>
                 <div class="card-body">
                     <form action="{{ route('calipers.update', ['caliper' => $caliper->id]) }}" method="POST" enctype="multipart/form-data" id="mainForm">
                         @csrf
                         @method('PUT')
-                        <div class="mb-3">
-                            <label for="caliperNumber" class="form-label">Part No.</label>
-                            <input type="text" name="caliperNumber" value="{{ $caliper->part_number }}" class="form-control" id="caliperNumber" required>
+                        <div class="row mb-3">    
+                            <div class="col-sm-4">
+                                <label for="jhPN" class="form-label">JH Part No.</label>
+                                <input type="text" name="jhPN" value="{{ $caliper->jh_part_number }}" class="form-control" id="jhPN">
+                            </div>
+                            <div class="col-sm-4">
+                                <label for="cardonePN" class="form-label">Cardone Part No.</label>
+                                <input type="text" name="cardonePN" value="{{ $caliper->cardone_part_number }}" class="form-control" id="cardonePN">
+                            </div>
+                            <div class="col-sm-4">
+                                <label for="centricPN" class="form-label">Centric Part No.</label>
+                                <input type="text" name="centricPN" value="{{ $caliper->centric_part_number }}" class="form-control" id="centricPN">
+                            </div>
                         </div>
                         <div class="mb-3">
                             <label for="caliperFamily" class="form-label">Family</label>
@@ -33,6 +43,18 @@
                                 @endif
                                 @endforeach
                             </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="casting1" class="form-label">Casting Number 1</label>
+                            <input type="text" name="casting1" value="{{ $caliper->casting1 }}" class="form-control" id="casting1">
+                        </div>
+                        <div class="mb-3">
+                            <label for="casting2" class="form-label">Casting Number 2</label>
+                            <input type="text" name="casting2" value="{{ $caliper->casting2 }}" class="form-control" id="casting2">
+                        </div>
+                        <div class="mb-3">
+                            <label for="bracketCasting" class="form-label">Bracket Casting Number</label>
+                            <input type="text" name="bracketCasting" value="{{ $caliper->bracket_casting }}" class="form-control" id="bracketCasting">
                         </div>
                         <div class="mb-3">
                             <label for="caliperPhotosMultiple" class="form-label">Upload Photos</label>
@@ -79,7 +101,7 @@
                 <div class="col">
                     <div class="card">
                         <div class="card-header">
-                            <strong>Photo: {{ $caliper->part_number }}{{ $photo->id }}</strong>
+                            <strong>Photo: {{ $caliper->id }}-{{ $photo->id }}</strong>
                             <div class="float-end">
                                 <form action="{{ route('caliperPhotos.destroy', ['caliperPhoto' => $photo->id]) }}" method="Post">
                                     @csrf
@@ -88,13 +110,12 @@
                                 </form>
                             </div>
                         </div>
-                        <a href="/storage/calipers/{{ $photo->image }}" target="_blank"><img src="/storage/calipers/{{ $photo->image }}" class="card-img-top"></a>
+                        <a href="/storage/calipers/{{ $photo->filename }}" target="_blank"><img src="/storage/calipers/{{ $photo->filename }}" class="card-img-top"></a>
                         <div class="card-body">
-                            <h5 class="card-title">Notes:</h5>
-                            <p class="card-text">No notes available</p>
-                        </div>
-                        <div class="card-footer">
-                            <strong> Status:</strong>
+                            <h5 class="card-title">Description:</h5>
+                            <p class="card-text">
+                                <textarea value="{{ $photo->description ?? '' }}" class="form-control" id="photoDescription" rows="3"></textarea>
+                            </p>
                         </div>
                     </div>
                 </div>

@@ -8,7 +8,7 @@
             <p>{{ $message }}</p>
         </div>
         @endif
-        <div class="col-md-12">
+        <div class="col-md-16">
             <div class="card">
                 <div class="card-header">
                     <div class="float-start">
@@ -20,19 +20,29 @@
                 </div>
                 <table class="table table-bordered">
                     <tr>
-                        <th>Part No.</th>
+                        <th>JH PN</th>
+                        <th>Cardone PN</th>
+                        <th>Centric PN</th>
                         <th>Family</th>
+                        <th>Casting #1</th>
+                        <th>Casting #2</th>
+                        <th>Bracket #</th>
                         <th>Create Time</th>
                         <th>Create By</th>
                         <th>Edit Time</th>
                         <th>Edit By</th>
-                        <th width="10%">Show</th>
-                        <th width="10%">Delete</th>
+                        <th>Show</th>
+                        <th>Delete</th>
                     </tr>
                     @foreach ($calipers as $caliper)
                     <tr>
-                        <td>{{ $caliper->part_number }}</td>
+                        <td>{{ $caliper->jh_part_number }}</td>
+                        <td>{{ $caliper->cardone_part_number }}</td>
+                        <td>{{ $caliper->centric_part_number }}</td>
                         <td>{{ $caliper->caliperFamilies->family }}</td>
+                        <td>{{ $caliper->casting1 }}</td>
+                        <td>{{ $caliper->casting2 }}</td>
+                        <td>{{ $caliper->bracket_casting }}</td>
                         <td>{{ $caliper->created_at }}</td>
                         <td>{{ $caliper->createdBy->name }}</td>
                         <td>{{ $caliper->updated_at }}</td>

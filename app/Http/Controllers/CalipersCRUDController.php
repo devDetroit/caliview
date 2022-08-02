@@ -45,21 +45,28 @@ class CalipersCRUDController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'caliperNumber' => 'required',
+            'jhPN' => 'required',
+            'cardonePN' => 'required',
+            'centricPN' => 'required',
             'caliperFamily' => 'required'
         ]);
         $caliper = new Calipers;
-        $caliper->part_number = $request->caliperNumber;
+        $caliper->jh_part_number = $request->jhPN;
+        $caliper->cardone_part_number = $request->cardonePN;
+        $caliper->centric_part_number = $request->centricPN;
         $caliper->family_id = $request->caliperFamily;
+        $caliper->casting1 = $request->casting1;
+        $caliper->casting2 = $request->casting2;
+        $caliper->bracket_casting = $request->bracketCasting;
         $caliper->created_by = auth()->user()->id;
         $caliper->updated_by = auth()->user()->id;
         $caliper->save();
         if (isset($request->caliperPhotos[0])) {
             foreach ($request->caliperPhotos as $photo) {
                 $photos = new CaliperPhotos;
-                $photoName = $request->caliperNumber . '_' . date('YmdHis') . '.' . $photo->extension();
+                $photoName = $caliper->id . '_' . date('YmdHis') . '.' . $photo->extension();
                 $photos->caliper_id = $caliper->id;
-                $photos->image = $photoName;
+                $photos->filename = $photoName;
                 $photos->created_by = auth()->user()->id;
                 $photos->updated_by = auth()->user()->id;
                 $photo->storeAs('public/calipers', $photoName);
@@ -89,7 +96,7 @@ class CalipersCRUDController extends Controller
     {
         return view('calipersCRUD.show', compact('caliper'), [
             'caliperPhotos' => CaliperPhotos::where('caliper_id', $caliper->id)->orderBy('id')->get(),
-            'caliperComponents' => CaliperComponents::with('components')->where('caliper_id', $caliper->id)->orderBy('component_id')->get()
+            'caliperComponents' => CaliperComponents::with('components')->where('caliper_id', $caliper->id)->orderBy('id')->get()
         ]);
     }
 
@@ -104,7 +111,7 @@ class CalipersCRUDController extends Controller
         return view('calipersCRUD.edit', compact('caliper'), [
             'caliperFamilies' => CaliperFamilies::orderBy('id')->get(),
             'caliperPhotos' => CaliperPhotos::where('caliper_id', $caliper->id)->orderBy('id')->get(),
-            'caliperComponents' => CaliperComponents::with('components')->where('caliper_id', $caliper->id)->orderBy('component_id')->get(),
+            'caliperComponents' => CaliperComponents::with('components')->where('caliper_id', $caliper->id)->orderBy('id')->get(),
             'components' => Components::orderBy('id')->get()
         ]);
     }
@@ -119,17 +126,24 @@ class CalipersCRUDController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
-            'caliperNumber' => 'required',
+            'jhPN' => 'required',
+            'cardonePN' => 'required',
+            'centricPN' => 'required',
             'caliperFamily' => 'required'
         ]);
         $caliper = Calipers::find($id);
-        $caliper->part_number = $request->caliperNumber;
+        $caliper->jh_part_number = $request->jhPN;
+        $caliper->cardone_part_number = $request->cardonePN;
+        $caliper->centric_part_number = $request->centricPN;
         $caliper->family_id = $request->caliperFamily;
+        $caliper->casting1 = $request->casting1;
+        $caliper->casting2 = $request->casting2;
+        $caliper->bracket_casting = $request->bracketCasting;
         $caliper->updated_by = auth()->user()->id;
         if (isset($request->caliperPhotos[0])) {
             foreach ($request->caliperPhotos as $photo) {
                 $photos = new CaliperPhotos;
-                $photoName = $request->caliperNumber . '_' . date('YmdHis') . '.' . $photo->extension();
+                $photoName = $caliper->id . '_' . date('YmdHis') . '.' . $photo->extension();
                 $photos->caliper_id = $caliper->id;
                 $photos->image = $photoName;
                 $photos->created_by = auth()->user()->id;
