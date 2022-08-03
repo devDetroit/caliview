@@ -14,7 +14,7 @@
                     <strong>New Caliper</strong>
                 </div>
                 <div class="card-body">
-                <form action="{{ route('calipers.store') }}" method="POST" enctype="multipart/form-data" id="mainForm">
+                    <form action="{{ route('calipers.store') }}" method="POST" enctype="multipart/form-data" id="mainForm">
                         @csrf
                         <div class="row mb-3">
                             <div class="col-sm-4">
@@ -104,16 +104,14 @@
 <script>
     // Autofill measure when selcting a component and switch requirement on quantity
     var componentSelect = document.getElementById("componentNo");
-    var components = JSON.parse('<?php echo json_encode($components); ?>');
-    componentSelect.addEventListener("change", function()
-    {
-        if(componentSelect.value == "")
-        {
+    var components = <?php echo json_encode($components); ?>;
+
+    console.log(components)
+    componentSelect.addEventListener("change", function() {
+        if (componentSelect.value == "") {
             document.getElementById("componentMeasure").value = "";
             document.getElementById("componentQuantity").removeAttribute("required");
-        }
-        else
-        {
+        } else {
             document.getElementById("componentMeasure").value = "<?php echo $component->measure; ?>";
             document.getElementById("componentQuantity").setAttribute("required", "");
         }
@@ -121,8 +119,8 @@
 
     // Add component forms
     var compCount = 1;
-    function addComponents()
-    {
+
+    function addComponents() {
         // Create new row
         let mainForm = document.getElementById("extraComponents");
         let divRow = document.createElement("div");
@@ -136,21 +134,21 @@
         divRow.appendChild(divComponentNo);
 
         let selectComponentNo = document.createElement("select");
-        selectComponentNo.name = "componentNo[${compCount}]";
+        selectComponentNo.name = `componentNo${compCount}`;
         selectComponentNo.className = "form-select";
-        selectComponentNo.id = "componentNo[${compCount}]";
+        selectComponentNo.id = `componentNo${compCount}`;
         divComponentNo.appendChild(selectComponentNo);
 
         let defaultOptComponentNo = document.createElement("option");
         defaultOptComponentNo.value = "";
-        defaultOptComponentNo.contains = "Select a Component";
+        defaultOptComponentNo.text = "Select a Component";
         defaultOptComponentNo.setAttribute("selected", "");
         selectComponentNo.appendChild(defaultOptComponentNo);
 
-        let optionComponentNo = document.createElement("option");
-        for(const component of components)
-        {
-            optionComponentNo.value = "<?php echo $component->id?>";
+        for (const component of components) {
+            let optionComponentNo = document.createElement("option");
+            optionComponentNo.value = component.id;
+            optionComponentNo.text = component.component_number;
             selectComponentNo.appendChild(optionComponentNo);
         };
 
@@ -163,6 +161,7 @@
         inputComponentMeasure.name = "componentMeasure[${compCount}]";
         inputComponentMeasure.className = "form-control";
         inputComponentMeasure.id = "componentMeasure[${compCount}]";
+        inputComponentMeasure.readOnly = true;
         divComponentMeasure.appendChild(inputComponentMeasure);
 
         // Quantity column
@@ -197,8 +196,7 @@
         compCount += 1;
     }
 
-    function removeComponents(rowNumber)
-    {
+    function removeComponents(rowNumber) {
         let mainForm = document.getElementById("mainForm");
         let childRow = document.getElementById("row" + rowNumber);
         mainForm.removeChild(childRow);
