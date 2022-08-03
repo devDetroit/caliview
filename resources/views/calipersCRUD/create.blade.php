@@ -14,7 +14,7 @@
                     <strong>New Caliper</strong>
                 </div>
                 <div class="card-body">
-                    <form action="{{ route('calipers.store') }}" method="POST" enctype="multipart/form-data" id="mainForm">
+                <form action="{{ route('calipers.store') }}" method="POST" enctype="multipart/form-data" id="mainForm">
                         @csrf
                         <div class="row mb-3">
                             <div class="col-sm-4">
@@ -30,30 +30,40 @@
                                 <input type="text" name="centricPN" class="form-control" id="centricPN" required>
                             </div>
                         </div>
-                        <div class="mb-3">
-                            <label for="caliperFamily" class="form-label">Family</label>
-                            <select name="caliperFamily" class="form-select" id="caliperFamily" required>
-                                <option selected value="">Select a Family</option>
-                                @foreach($caliperFamilies as $family)
-                                <option value="{{ $family->id }}">{{ $family->family }}</option>
-                                @endforeach
-                            </select>
+                        <div class="row mb-3">
+                            <div class="col-sm-12">
+                                <label for="caliperFamily" class="form-label">Family</label>
+                                <select name="caliperFamily" class="form-select" id="caliperFamily" required>
+                                    <option selected value="">Select a Family</option>
+                                    @foreach($caliperFamilies as $family)
+                                    <option value="{{ $family->id }}">{{ $family->family }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
                         </div>
-                        <div class="mb-3">
-                            <label for="casting1" class="form-label">Casting Number 1</label>
-                            <input type="text" name="casting1" class="form-control" id="casting1">
+                        <div class="row mb-3">
+                            <div class="col-sm-12">
+                                <label for="casting1" class="form-label">Casting Number 1</label>
+                                <input type="text" name="casting1" class="form-control" id="casting1">
+                            </div>
                         </div>
-                        <div class="mb-3">
-                            <label for="casting2" class="form-label">Casting Number 2</label>
-                            <input type="text" name="casting2" class="form-control" id="casting2">
+                        <div class="row mb-3">
+                            <div class="col-sm-12">
+                                <label for="casting2" class="form-label">Casting Number 2</label>
+                                <input type="text" name="casting2" class="form-control" id="casting2">
+                            </div>
                         </div>
-                        <div class="mb-3">
-                            <label for="bracketCasting" class="form-label">Bracket Casting Number</label>
-                            <input type="text" name="bracketCasting" class="form-control" id="bracketCasting">
+                        <div class="row mb-3">
+                            <div class="col-sm-12">
+                                <label for="bracketCasting" class="form-label">Bracket Casting Number</label>
+                                <input type="text" name="bracketCasting" class="form-control" id="bracketCasting">
+                            </div>
                         </div>
-                        <div class="mb-3">
-                            <label for="caliperPhotosMultiple" class="form-label">Upload Photos</label>
-                            <input name="caliperPhotos[]" class="form-control" type="file" id="caliperPhotosMultiple"multiple>
+                        <div class="row mb-3">
+                            <div class="col-sm-12">
+                                <label for="caliperPhotosMultiple" class="form-label">Upload Photos</label>
+                                <input name="caliperPhotos[]" class="form-control" type="file" id="caliperPhotosMultiple" multiple>
+                            </div>
                         </div>
                         <div class="row mb-3">
                             <div class="col-sm-4">
@@ -77,6 +87,7 @@
                                 <a class="btn btn-success btn-sm" onclick="addComponents()">+</a>
                             </div>
                         </div>
+                        <div id="extraComponents"></div>
                         <div class="float-end">
                             <button type="submit" class="btn btn-primary">Submit</button>
                         </div>
@@ -92,10 +103,11 @@
 
 <script>
     // Autofill measure when selcting a component and switch requirement on quantity
-    var component = document.getElementById("componentNo");
-    component.addEventListener("change", function()
+    var componentSelect = document.getElementById("componentNo");
+    var components = JSON.parse('<?php echo json_encode($components); ?>');
+    componentSelect.addEventListener("change", function()
     {
-        if(component.value == "")
+        if(componentSelect.value == "")
         {
             document.getElementById("componentMeasure").value = "";
             document.getElementById("componentQuantity").removeAttribute("required");
@@ -112,7 +124,7 @@
     function addComponents()
     {
         // Create new row
-        let mainForm = document.getElementById("mainForm");
+        let mainForm = document.getElementById("extraComponents");
         let divRow = document.createElement("div");
         divRow.className = "row mb-3";
         divRow.id = "row" + compCount;
@@ -122,12 +134,6 @@
         let divComponentNo = document.createElement("div");
         divComponentNo.className = "col-sm-4";
         divRow.appendChild(divComponentNo);
-
-        let labelComponentNo = document.createElement("label");
-        labelComponentNo.htmlFor = "componentNo[${compCount}]";
-        labelComponentNo.className = "form-label";
-        labelComponentNo.contains = "Component";
-        divComponentNo.appendChild(labelComponentNo);
 
         let selectComponentNo = document.createElement("select");
         selectComponentNo.name = "componentNo[${compCount}]";
@@ -141,8 +147,6 @@
         defaultOptComponentNo.setAttribute("selected", "");
         selectComponentNo.appendChild(defaultOptComponentNo);
 
-        let components = <?php echo json_encode($components); ?>;
-        console.log(components);
         let optionComponentNo = document.createElement("option");
         for(const component of components)
         {
@@ -155,12 +159,6 @@
         divComponentMeasure.className = "col-sm-5";
         divRow.appendChild(divComponentMeasure);
 
-        let labelComponentMeasure = document.createElement("label");
-        labelComponentMeasure.htmlFor = "componentMeasure[${compCount}]";
-        labelComponentMeasure.className = "form-label";
-        labelComponentMeasure.contains = "Measurements";
-        divComponentMeasure.appendChild(labelComponentMeasure);
-
         let inputComponentMeasure = document.createElement("input");
         inputComponentMeasure.name = "componentMeasure[${compCount}]";
         inputComponentMeasure.className = "form-control";
@@ -171,12 +169,6 @@
         let divComponentQty = document.createElement("div");
         divComponentQty.className = "col-sm-2";
         divRow.appendChild(divComponentQty);
-
-        let labelComponentQty = document.createElement("label");
-        labelComponentQty.htmlFor = "componentQuantity[${icompCount}]";
-        labelComponentQty.className = "form-label";
-        labelComponentQty.contains = "Measurements";
-        divComponentQty.appendChild(labelComponentQty);
 
         let inputComponentQty = document.createElement("input");
         inputComponentQty.name = "componentQuantity[${compCount}]";

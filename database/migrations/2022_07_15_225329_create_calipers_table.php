@@ -19,9 +19,9 @@ class CreateCalipersTable extends Migration
             $table->string('cardone_part_number')->unique();
             $table->string('centric_part_number')->unique();
             $table->foreignId('family_id')->nullOnDelete()->constrained('caliper_families');
-            $table->string('casting1');
-            $table->string('casting2');
-            $table->string('bracket_casting');
+            $table->string('casting1')->nullable();
+            $table->string('casting2')->nullable();
+            $table->string('bracket_casting')->nullable();
             $table->timestamps();
             $table->foreignId('created_by')->constrained('users');
             $table->foreignId('updated_by')->constrained('users');
