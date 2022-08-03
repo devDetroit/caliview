@@ -102,7 +102,7 @@
         }
         else
         {
-            document.getElementById("componentMeasure").value = "<?=$component->measure?>";
+            document.getElementById("componentMeasure").value = "<?php echo $component->measure; ?>";
             document.getElementById("componentQuantity").setAttribute("required", "");
         }
     });
@@ -141,13 +141,14 @@
         defaultOptComponentNo.setAttribute("selected", "");
         selectComponentNo.appendChild(defaultOptComponentNo);
 
-        let components = <?=$components?>;
-        let optionComponentNo = createElement("option");
-        components.foreach(function createOptions(component)
+        let components = <?php echo json_encode($components); ?>;
+        console.log(components);
+        let optionComponentNo = document.createElement("option");
+        for(const component of components)
         {
-            optionComponentNo.value = "<?=$component->id?>";
+            optionComponentNo.value = "<?php echo $component->id?>";
             selectComponentNo.appendChild(optionComponentNo);
-        });
+        };
 
         // Measure column
         let divComponentMeasure = document.createElement("div");
