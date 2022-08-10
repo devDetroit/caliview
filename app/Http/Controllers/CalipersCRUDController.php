@@ -7,6 +7,8 @@ use App\Models\CaliperFamilies;
 use App\Models\CaliperPhotos;
 use App\Models\CaliperComponents;
 use App\Models\Components;
+use App\Models\CaliperVehicles;
+use App\Models\Vehicles;
 use Illuminate\Http\Request;
 
 class CalipersCRUDController extends Controller
@@ -32,7 +34,8 @@ class CalipersCRUDController extends Controller
     {
         return view('calipersCRUD.create', [
             'caliperFamilies' => CaliperFamilies::orderBy('id')->get(),
-            'components' => Components::orderBy('id')->get()
+            'components' => Components::orderBy('id')->get(),
+            'vehicles' => Vehicles::orderBy('id')->get()
         ]);
     }
 
@@ -73,14 +76,29 @@ class CalipersCRUDController extends Controller
                 $photos->save();
             }
         }
-        if (isset($request->componentNo)) {
-            $caliperComp = new CaliperComponents;
-            $caliperComp->caliper_id = $caliper->id;
-            $caliperComp->component_id = $request->componentNo;
-            $caliperComp->quantity = $request->componentQuantity;
-            $caliperComp->created_by = auth()->user()->id;
-            $caliperComp->updated_by = auth()->user()->id;
-            $caliperComp->save();
+        $component = array_values($request->componentNo);
+        $quantity = array_values($request->componentQuantity);
+        if (isset($request->componentNo[0])) {
+            for ($i = 0; $i < count($component); $i++) {
+                $caliperComp = new CaliperComponents;
+                $caliperComp->caliper_id = $caliper->id;
+                $caliperComp->component_id = $component[$i];
+                $caliperComp->quantity = $quantity[$i];
+                $caliperComp->created_by = auth()->user()->id;
+                $caliperComp->updated_by = auth()->user()->id;
+                $caliperComp->save();
+            }
+        }
+        $vehicle = array_values($request->vehicleEngine);
+        if (isset($vehicle[0])) {
+            for ($i = 0; $i < count($vehicle); $i++) {
+                $caliperVeh = new CaliperVehicles();
+                $caliperVeh->caliper_id = $caliper->id;
+                $caliperVeh->vehicle_id = $vehicle[$i];
+                $caliperVeh->created_by = auth()->user()->id;
+                $caliperVeh->updated_by = auth()->user()->id;
+                $caliperVeh->save();
+            }
         }
         return redirect()->route('calipers.index')
             ->with('success', 'The caliper has been created successfully.');
@@ -96,7 +114,8 @@ class CalipersCRUDController extends Controller
     {
         return view('calipersCRUD.show', compact('caliper'), [
             'caliperPhotos' => CaliperPhotos::where('caliper_id', $caliper->id)->orderBy('id')->get(),
-            'caliperComponents' => CaliperComponents::with('components')->where('caliper_id', $caliper->id)->orderBy('id')->get()
+            'caliperComponents' => CaliperComponents::with('components')->where('caliper_id', $caliper->id)->orderBy('id')->get(),
+            'caliperVehicles' => CaliperVehicles::with('vehicles')->where('caliper_id', $caliper->id)->orderBy('id')->get()
         ]);
     }
 
@@ -112,7 +131,9 @@ class CalipersCRUDController extends Controller
             'caliperFamilies' => CaliperFamilies::orderBy('id')->get(),
             'caliperPhotos' => CaliperPhotos::where('caliper_id', $caliper->id)->orderBy('id')->get(),
             'caliperComponents' => CaliperComponents::with('components')->where('caliper_id', $caliper->id)->orderBy('id')->get(),
-            'components' => Components::orderBy('id')->get()
+            'caliperVehicles' => CaliperVehicles::with('vehicles')->where('caliper_id', $caliper->id)->orderBy('id')->get(),
+            'components' => Components::orderBy('id')->get(),
+            'vehicles' => Vehicles::orderBy('id')->get()
         ]);
     }
 
@@ -152,18 +173,37 @@ class CalipersCRUDController extends Controller
                 $photos->save();
             }
         }
-        if (isset($request->componentNo)) {
+        $component = array_values($request->componentNo);
+        $quantity = array_values($request->componentQuantity);
+        if (isset($request->componentNo[0])) {
             $caliperComponents = CaliperComponents::where('caliper_id', $id)->get();
             foreach ($caliperComponents as $caliComp) {
-                CaliperComponents::where('caliper_id', )->delete();
+                CaliperComponents::where('caliper_id', $caliper->id)->delete();
             }
-            $caliCompNew = new CaliperComponents;
-            $caliCompNew->caliper_id = $caliper->id;
-            $caliCompNew->component_id = $request->componentNo;
-            $caliCompNew->quantity = $request->componentQuantity;
-            $caliCompNew->created_by = auth()->user()->id;
-            $caliCompNew->updated_by = auth()->user()->id;
-            $caliCompNew->save();
+            for ($i = 0; $i < count($component); $i++) {
+                $caliperComp = new CaliperComponents;
+                $caliperComp->caliper_id = $caliper->id;
+                $caliperComp->component_id = $component[$i];
+                $caliperComp->quantity = $quantity[$i];
+                $caliperComp->created_by = auth()->user()->id;
+                $caliperComp->updated_by = auth()->user()->id;
+                $caliperComp->save();
+            }
+        }
+        $vehicle = array_values($request->vehicleEngine);
+        if (isset($vehicle[0])) {
+            $caliperVehicles = CaliperVehicles::where('caliper_id', $id)->get();
+            foreach ($caliperVehicles as $caliComp) {
+                CaliperVehicles::where('caliper_id', $id)->delete();
+            }
+            for ($i = 0; $i < count($vehicle); $i++) {
+                $caliperVeh = new CaliperVehicles();
+                $caliperVeh->caliper_id = $caliper->id;
+                $caliperVeh->vehicle_id = $vehicle[$i];
+                $caliperVeh->created_by = auth()->user()->id;
+                $caliperVeh->updated_by = auth()->user()->id;
+                $caliperVeh->save();
+            }
         }
         $caliper->save();
         return redirect()->route('calipers.show', compact('caliper'))
