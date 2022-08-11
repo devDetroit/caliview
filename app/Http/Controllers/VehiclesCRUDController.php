@@ -87,15 +87,17 @@ class VehiclesCRUDController extends Controller
         $request->validate([
             'maker' => 'required',
             'model' => 'required',
-            'year' => 'required'
+            'year' => 'required',
+            'engine' => 'required'
         ]);
         $vehicle = Vehicles::find($id);
         $vehicle->maker = $request->maker;
         $vehicle->model = $request->model;
         $vehicle->year = $request->year;
+        $vehicle->engine = $request->engine;
         $vehicle->save();
         return redirect()->route('vehicles.index')
-            ->with('success', 'The vehicle has been removed successfully.');
+            ->with('success', 'The vehicle has been updated successfully.');
     }
 
     /**

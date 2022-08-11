@@ -156,43 +156,43 @@
 
     function addComponents() {
         // Create new row
-        let mainForm = document.getElementById("extraComponents");
-        let divRow = document.createElement("div");
+        const mainForm = document.getElementById("extraComponents");
+        const divRow = document.createElement("div");
         divRow.className = "row mb-3";
         divRow.id = "row" + compCount;
         mainForm.appendChild(divRow);
 
         // Component column
-        let divComponentNo = document.createElement("div");
+        const divComponentNo = document.createElement("div");
         divComponentNo.className = "col-sm-4";
         divRow.appendChild(divComponentNo);
 
-        let selectComponentNo = document.createElement("select");
+        const selectComponentNo = document.createElement("select");
         selectComponentNo.name = `componentNo[${compCount}]`;
         selectComponentNo.className = "form-select";
         selectComponentNo.id = `componentNo[${compCount}]`;
         selectComponentNo.setAttribute("onchange", `autofillMeasure(${compCount})`)
         divComponentNo.appendChild(selectComponentNo);
 
-        let defaultOptComponentNo = document.createElement("option");
+        const defaultOptComponentNo = document.createElement("option");
         defaultOptComponentNo.value = "";
         defaultOptComponentNo.text = "Select a Component";
         defaultOptComponentNo.selected = true;
         selectComponentNo.appendChild(defaultOptComponentNo);
 
         for (const component of components) {
-            let optionComponentNo = document.createElement("option");
+            const optionComponentNo = document.createElement("option");
             optionComponentNo.value = component.id;
             optionComponentNo.text = component.component_number;
             selectComponentNo.appendChild(optionComponentNo);
         };
 
         // Measure column
-        let divComponentMeasure = document.createElement("div");
+        const divComponentMeasure = document.createElement("div");
         divComponentMeasure.className = "col-sm-5";
         divRow.appendChild(divComponentMeasure);
 
-        let inputComponentMeasure = document.createElement("input");
+        const inputComponentMeasure = document.createElement("input");
         inputComponentMeasure.name = `componentMeasure[${compCount}]`;
         inputComponentMeasure.className = "form-control";
         inputComponentMeasure.id = `componentMeasure[${compCount}]`;
@@ -200,28 +200,28 @@
         divComponentMeasure.appendChild(inputComponentMeasure);
 
         // Quantity column
-        let divComponentQty = document.createElement("div");
+        const divComponentQty = document.createElement("div");
         divComponentQty.className = "col-sm-2";
         divRow.appendChild(divComponentQty);
 
-        let inputComponentQty = document.createElement("input");
+        const inputComponentQty = document.createElement("input");
         inputComponentQty.name = `componentQuantity[${compCount}]`;
         inputComponentQty.className = "form-control";
         inputComponentQty.id = `componentQuantity[${compCount}]`;
         divComponentQty.appendChild(inputComponentQty);
 
         // Add and Remove buttons
-        let divButtons = document.createElement("div");
+        const divButtons = document.createElement("div");
         divButtons.className = "col-sm-1";
         divRow.appendChild(divButtons);
 
-        /* let buttonAdd = document.createElement("a");
+        /* const buttonAdd = document.createElement("a");
         buttonAdd.className = "btn btn-success btn-sm";
         buttonAdd.setAttribute("onclick",  "addComponents()");
         buttonAdd.text = "+";
         divButtons.appendChild(buttonAdd); */
 
-        let buttonRemove = document.createElement("a");
+        const buttonRemove = document.createElement("a");
         buttonRemove.className = "btn btn-danger btn-sm";
         buttonRemove.setAttribute("onclick", `removeComponents(${compCount})`);
         buttonRemove.text = "-";
@@ -233,8 +233,8 @@
     
     // Remove component forms
     function removeComponents(rowNumber) {
-        let mainForm = document.getElementById("extraComponents");
-        let childRow = document.getElementById(`row${rowNumber}`);
+        const mainForm = document.getElementById("extraComponents");
+        const childRow = document.getElementById(`row${rowNumber}`);
         mainForm.removeChild(childRow);
     }
 
@@ -243,17 +243,17 @@
     const vehicles = <?php echo json_encode($vehicles); ?>;
 
     function autofillMakers(id) {
-        let selectMaker = document.getElementById(`vehicleMaker[${id}]`);
+        const selectMaker = document.getElementById(`vehicleMaker[${id}]`);
         if (event.target.value != "") {
             selectMaker.replaceChildren();
-            let defaultOptMaker = document.createElement("option");
+            const defaultOptMaker = document.createElement("option");
             defaultOptMaker.value = "";
             defaultOptMaker.text = "Maker";
             defaultOptMaker.selected = true;
             selectMaker.appendChild(defaultOptMaker);
             vehicles.forEach((vehicle) => {
                 if(vehicle.year == event.target.value) {
-                    let optionMaker = document.createElement("option");
+                    const optionMaker = document.createElement("option");
                     optionMaker.value = vehicle.maker;
                     optionMaker.text = vehicle.maker;
                     selectMaker.appendChild(optionMaker);
@@ -266,7 +266,7 @@
             autofillEngines(id);
         } else {
             selectMaker.replaceChildren();
-            let defaultOptMaker = document.createElement("option");
+            const defaultOptMaker = document.createElement("option");
             defaultOptMaker.value = "";
             defaultOptMaker.text = "Maker";
             defaultOptMaker.selected = true;
@@ -281,18 +281,18 @@
 
     // Autofill Models when selecting a Maker
     function autofillModels(id) {
-        let selectYear = document.getElementById(`vehicleYear[${id}]`);
-        let selectModel = document.getElementById(`vehicleModel[${id}]`);
+        const selectYear = document.getElementById(`vehicleYear[${id}]`);
+        const selectModel = document.getElementById(`vehicleModel[${id}]`);
         if (event.target.value != "") {
             selectModel.replaceChildren();
-            let defaultOptModel = document.createElement("option");
+            const defaultOptModel = document.createElement("option");
             defaultOptModel.value = "";
             defaultOptModel.text = "Model";
             defaultOptModel.selected = true;
             selectModel.appendChild(defaultOptModel);
             vehicles.forEach((vehicle) => {
                 if(vehicle.year == selectYear.value && vehicle.maker == event.target.value) {
-                    let optionModel = document.createElement("option");
+                    const optionModel = document.createElement("option");
                     optionModel.value = vehicle.model;
                     optionModel.text = vehicle.model;
                     selectModel.appendChild(optionModel);
@@ -301,7 +301,7 @@
             autofillEngines(id);
         } else {
             selectModel.replaceChildren();
-            let defaultOptModel = document.createElement("option");
+            const defaultOptModel = document.createElement("option");
             defaultOptModel.value = "";
             defaultOptModel.text = "Model";
             defaultOptModel.selected = true;
@@ -312,19 +312,19 @@
 
     // Autofill Engines when selecting a Model
     function autofillEngines(id) {
-        let selectYear = document.getElementById(`vehicleYear[${id}]`);
-        let selectMaker = document.getElementById(`vehicleMaker[${id}]`);
-        let selectEngine = document.getElementById(`vehicleEngine[${id}]`);
+        const selectYear = document.getElementById(`vehicleYear[${id}]`);
+        const selectMaker = document.getElementById(`vehicleMaker[${id}]`);
+        const selectEngine = document.getElementById(`vehicleEngine[${id}]`);
         if (event.target.value != "") {
             selectEngine.replaceChildren();
-            let defaultOptEngine = document.createElement("option");
+            const defaultOptEngine = document.createElement("option");
             defaultOptEngine.value = "";
             defaultOptEngine.text = "Engine";
             defaultOptEngine.selected = true;
             selectEngine.appendChild(defaultOptEngine);
             vehicles.forEach((vehicle) => {
                 if(vehicle.year == selectYear.value && vehicle.maker == selectMaker.value && vehicle.model == event.target.value) {
-                    let optionEngine = document.createElement("option");
+                    const optionEngine = document.createElement("option");
                     optionEngine.value = vehicle.id;
                     optionEngine.text = vehicle.engine;
                     selectEngine.appendChild(optionEngine);
@@ -332,7 +332,7 @@
             })
         } else {
             selectEngine.replaceChildren();
-            let defaultOptEngine = document.createElement("option");
+            const defaultOptEngine = document.createElement("option");
             defaultOptEngine.value = "";
             defaultOptEngine.text = "Engine";
             defaultOptEngine.selected = true;
@@ -345,102 +345,102 @@
 
     function addVehicles() {
         // Create new row
-        let mainForm = document.getElementById("extraVehicles");
-        let divRow = document.createElement("div");
+        const mainForm = document.getElementById("extraVehicles");
+        const divRow = document.createElement("div");
         divRow.className = "row mb-3";
         divRow.id = "row" + vehCount;
         mainForm.appendChild(divRow);
 
         // Year column
-        let divYear = document.createElement("div");
+        const divYear = document.createElement("div");
         divYear.className = "col-sm-2";
         divRow.appendChild(divYear);
 
-        let selectYear = document.createElement("select");
+        const selectYear = document.createElement("select");
         selectYear.name = `vehicleYear[${vehCount}]`;
         selectYear.className = "form-select";
         selectYear.id = `vehicleYear[${vehCount}]`;
         selectYear.setAttribute("onchange", `autofillMakers(${vehCount})`)
         divYear.appendChild(selectYear);
 
-        let defaultOptYear = document.createElement("option");
+        const defaultOptYear = document.createElement("option");
         defaultOptYear.value = "";
         defaultOptYear.text = "Year";
         defaultOptYear.selected = true;
         selectYear.appendChild(defaultOptYear);
 
-        for (let i = new Date().getFullYear(); i >= 1960; i--) {
-            let optionYear = document.createElement("option");
+        for (const i = new Date().getFullYear(); i >= 1960; i--) {
+            const optionYear = document.createElement("option");
             optionYear.value = i;
             optionYear.text = i;
             selectYear.appendChild(optionYear);
         };
 
         // Maker column
-        let divMaker = document.createElement("div");
+        const divMaker = document.createElement("div");
         divMaker.className = "col-sm-3";
         divRow.appendChild(divMaker);
 
-        let selectMaker = document.createElement("select");
+        const selectMaker = document.createElement("select");
         selectMaker.name = `vehicleMaker[${vehCount}]`;
         selectMaker.className = "form-select";
         selectMaker.id = `vehicleMaker[${vehCount}]`;
         selectMaker.setAttribute("onchange", `autofillModels(${vehCount})`)
         divMaker.appendChild(selectMaker);
 
-        let defaultOptMaker = document.createElement("option");
+        const defaultOptMaker = document.createElement("option");
         defaultOptMaker.value = "";
         defaultOptMaker.text = "Maker";
         defaultOptMaker.selected = true;
         selectMaker.appendChild(defaultOptMaker);
 
         // Model column
-        let divModel = document.createElement("div");
+        const divModel = document.createElement("div");
         divModel.className = "col-sm-3";
         divRow.appendChild(divModel);
 
-        let selectModel = document.createElement("select");
+        const selectModel = document.createElement("select");
         selectModel.name = `vehicleModel[${vehCount}]`;
         selectModel.className = "form-select";
         selectModel.id = `vehicleModel[${vehCount}]`;
         selectModel.setAttribute("onchange", `autofillEngines(${vehCount})`)
         divModel.appendChild(selectModel);
 
-        let defaultOptModel = document.createElement("option");
+        const defaultOptModel = document.createElement("option");
         defaultOptModel.value = "";
         defaultOptModel.text = "Model";
         defaultOptModel.selected = true;
         selectModel.appendChild(defaultOptModel);
 
         // Engine column
-        let divEngine = document.createElement("div");
+        const divEngine = document.createElement("div");
         divEngine.className = "col-sm-3";
         divRow.appendChild(divEngine);
 
-        let selectEngine = document.createElement("select");
+        const selectEngine = document.createElement("select");
         selectEngine.name = `vehicleEngine[${vehCount}]`;
         selectEngine.className = "form-select";
         selectEngine.id = `vehicleEngine[${vehCount}]`;
         divEngine.appendChild(selectEngine);
 
-        let defaultOptEngine = document.createElement("option");
+        const defaultOptEngine = document.createElement("option");
         defaultOptEngine.value = "";
         defaultOptEngine.text = "Engine";
         defaultOptEngine.selected = true;
         selectEngine.appendChild(defaultOptEngine);
 
         // Add and Remove buttons
-        let divButtons = document.createElement("div");
+        const divButtons = document.createElement("div");
         divButtons.className = "col-sm-1";
         divRow.appendChild(divButtons);
 
-        /* let buttonAdd = document.createElement("a");
+        /* const buttonAdd = document.createElement("a");
         buttonAdd.className = "btn btn-success btn-sm";
         buttonAdd.setAttribute("onclick", "addVehicles()");
         buttonAdd.text = "+";
         divButtons.appendChild(buttonAdd); */
 
-        let buttonRemove = document.createElement("a");
+        const buttonRemove = document.createElement("a");
         buttonRemove.className = "btn btn-danger btn-sm";
         buttonRemove.setAttribute("onclick", `removeVehicles(${vehCount})`);
         buttonRemove.text = "-";
@@ -452,8 +452,8 @@
     
     // Remove vehicle forms
     function removeVehicles(rowNumber) {
-        let mainForm = document.getElementById("extraVehicles");
-        let childRow = document.getElementById(`row${rowNumber}`);
+        const mainForm = document.getElementById("extraVehicles");
+        const childRow = document.getElementById(`row${rowNumber}`);
         mainForm.removeChild(childRow);
     }
 </script>

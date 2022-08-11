@@ -31,7 +31,7 @@
                                 <input type="text" name="centricPN" value="{{ $caliper->centric_part_number }}" class="form-control" id="centricPN">
                             </div>
                         </div>
-                        <div class="row mb-3">
+                        <div class="mb-3">
                             <label for="caliperFamily" class="form-label">Family</label>
                             <select name="caliperFamily" class="form-select" id="caliperFamily" required>
                                 <option value="">Select a Family</option>
@@ -44,26 +44,26 @@
                                 @endforeach
                             </select>
                         </div>
-                        <div class="row mb-3">
+                        <div class="mb-3">
                             <label for="casting1" class="form-label">Casting Number 1</label>
                             <input type="text" name="casting1" value="{{ $caliper->casting1 }}" class="form-control" id="casting1">
                         </div>
-                        <div class="row mb-3">
+                        <div class="mb-3">
                             <label for="casting2" class="form-label">Casting Number 2</label>
                             <input type="text" name="casting2" value="{{ $caliper->casting2 }}" class="form-control" id="casting2">
                         </div>
-                        <div class="row mb-3">
+                        <div class="mb-3">
                             <label for="bracketCasting" class="form-label">Bracket Casting Number</label>
                             <input type="text" name="bracketCasting" value="{{ $caliper->bracket_casting }}" class="form-control" id="bracketCasting">
                         </div>
-                        <div class="row mb-3">
+                        <div class="mb-3">
                             <label for="caliperPhotosMultiple" class="form-label">Upload Photos</label>
                             <input name="caliperPhotos[]" class="form-control" type="file" id="caliperPhotosMultiple" multiple>
                         </div>
                         <div class="row">
                             <h5 class="card-title"><strong>Related Components</strong></h5>
                         </div>
-                        <div class="row mb-3">
+                        <div class="row gx-2">
                             <div class="col-sm-4">
                                 <label for="componentNo" class="form-label">Component</label>
                             </div>
@@ -74,14 +74,14 @@
                                 <label for="componentQuantity" class="form-label">Quantity</label>
                             </div>
                             <div class="col-sm-1">
-                                <a class="btn btn-success btn-sm" onclick="addComponents()">+</a>
+                                <a class="btn btn-success btn-sm float-end" onclick="addComponents()">+</a>
                             </div>
                         </div>
                         <div id="componentsList"></div>
                         <div class="row">
                             <h5 class="card-title"><strong>Compatible Vehicles</strong></h5>
                         </div>
-                        <div class="row mb-3">
+                        <div class="row gx-2">
                             <div class="col-sm-2">
                                 <label for="vehicleYear" class="form-label">Year</label>
                             </div>
@@ -95,7 +95,7 @@
                                 <label for="vehicleEngine" class="form-label">Engine</label>
                             </div>
                             <div class="col-sm-1 mt-1">
-                                <a class="btn btn-success btn-sm" onclick="addVehicles()">+</a>
+                                <a class="btn btn-success btn-sm float-end" onclick="addVehicles()">+</a>
                             </div>
                         </div>
                         <div id="vehiclesList"></div>
@@ -162,7 +162,7 @@
     if (caliperComponents.length == 0 || caliperComponents[0] === null) {
         // Create new row
         const divRow = document.createElement("div");
-        divRow.className = "row mb-3";
+        divRow.className = "row mb-3 gx-2";
         divRow.id = "row" + compCount;
         divComponents.appendChild(divRow);
 
@@ -219,7 +219,7 @@
     } else {
         caliperComponents.forEach((caliComp) => {
             const divRow = document.createElement("div");
-            divRow.className = "row mb-3";
+            divRow.className = "row mb-3 gx-2";
             divRow.id = "row" + compCount;
             divComponents.appendChild(divRow);
 
@@ -233,6 +233,7 @@
             selectComponentNo.className = "form-select";
             selectComponentNo.id = `componentNo[${compCount}]`;
             selectComponentNo.setAttribute("onchange", `autofillMeasure(${compCount})`)
+            selectComponentNo.required = true;
             divComponentNo.appendChild(selectComponentNo);
 
             const defaultOptComponentNo = document.createElement("option");
@@ -272,6 +273,7 @@
             inputComponentQty.className = "form-control";
             inputComponentQty.id = `componentQuantity[${compCount}]`;
             inputComponentQty.value = caliperComponents[compCount].quantity;
+            inputComponentQty.required = true;
             divComponentQty.appendChild(inputComponentQty);
 
             if(compCount > 0) {
@@ -287,7 +289,7 @@
                 divButtons.appendChild(buttonAdd); */
 
                 const buttonRemove = document.createElement("a");
-                buttonRemove.className = "btn btn-danger btn-sm";
+                buttonRemove.className = "btn btn-danger btn-sm float-end";
                 buttonRemove.setAttribute("onclick", `removeComponents(${compCount})`);
                 buttonRemove.text = "-";
                 divButtons.appendChild(buttonRemove);
@@ -302,7 +304,7 @@
     function addComponents() {
         // Create new row
         const divRow = document.createElement("div");
-        divRow.className = "row mb-3";
+        divRow.className = "row mb-3 gx-2";
         divRow.id = "row" + compCount;
         divComponents.appendChild(divRow);
 
@@ -366,7 +368,7 @@
         divButtons.appendChild(buttonAdd); */
 
         const buttonRemove = document.createElement("a");
-        buttonRemove.className = "btn btn-danger btn-sm";
+        buttonRemove.className = "btn btn-danger btn-sm float-end";
         buttonRemove.setAttribute("onclick", `removeComponents(${compCount})`);
         buttonRemove.text = "-";
         divButtons.appendChild(buttonRemove);
@@ -491,7 +493,7 @@
     if (caliperVehicles.length == 0 || caliperVehicles[0] === null) {
         // Create new row
         const divRow = document.createElement("div");
-        divRow.className = "row mb-3";
+        divRow.className = "row mb-3 gx-2";
         divRow.id = "row" + vehCount;
         divVehicles.appendChild(divRow);
 
@@ -586,7 +588,7 @@
             divButtons.appendChild(buttonAdd); */
 
             const buttonRemove = document.createElement("a");
-            buttonRemove.className = "btn btn-danger btn-sm";
+            buttonRemove.className = "btn btn-danger btn-sm float-end";
             buttonRemove.setAttribute("onclick", `removeVehicles(${vehCount})`);
             buttonRemove.text = "-";
             divButtons.appendChild(buttonRemove);
@@ -598,7 +600,7 @@
         caliperVehicles.forEach((caliVeh) => {
             // Create new row
             const divRow = document.createElement("div");
-            divRow.className = "row mb-3";
+            divRow.className = "row mb-3 gx-2";
             divRow.id = "row" + vehCount;
             divVehicles.appendChild(divRow);
 
@@ -611,7 +613,7 @@
             selectYear.name = `vehicleYear[${vehCount}]`;
             selectYear.className = "form-select";
             selectYear.id = `vehicleYear[${vehCount}]`;
-            selectYear.setAttribute("onchange", `autofillMakers(${vehCount})`)
+            selectYear.setAttribute("onchange", `autofillMakers(${vehCount})`);
             divYear.appendChild(selectYear);
 
             const defaultOptYear = document.createElement("option");
@@ -637,14 +639,25 @@
             selectMaker.name = `vehicleMaker[${vehCount}]`;
             selectMaker.className = "form-select";
             selectMaker.id = `vehicleMaker[${vehCount}]`;
-            selectMaker.setAttribute("onchange", `autofillModels(${vehCount})`)
+            selectMaker.setAttribute("onchange", `autofillModels(${vehCount})`);
+            selectMaker.required = true;
             divMaker.appendChild(selectMaker);
 
             const defaultOptMaker = document.createElement("option");
             defaultOptMaker.value = "";
             defaultOptMaker.text = "Maker";
-            defaultOptMaker.selected = true;
             selectMaker.appendChild(defaultOptMaker);
+
+            vehicles.forEach((vehicle) => {
+                if(vehicle.year == caliVeh.vehicles.year) {
+                    const optionMaker = document.createElement("option");
+                    optionMaker.value = vehicle.maker;
+                    optionMaker.text = vehicle.maker;
+                    if(vehicle.id == caliVeh.vehicle_id)
+                        optionMaker.selected = true;
+                    selectMaker.appendChild(optionMaker);
+                }
+            })
 
             // Model column
             const divModel = document.createElement("div");
@@ -655,14 +668,25 @@
             selectModel.name = `vehicleModel[${vehCount}]`;
             selectModel.className = "form-select";
             selectModel.id = `vehicleModel[${vehCount}]`;
-            selectModel.setAttribute("onchange", `autofillEngines(${vehCount})`)
+            selectModel.setAttribute("onchange", `autofillEngines(${vehCount})`);
+            selectModel.required = true;
             divModel.appendChild(selectModel);
 
             const defaultOptModel = document.createElement("option");
             defaultOptModel.value = "";
             defaultOptModel.text = "Model";
-            defaultOptModel.selected = true;
             selectModel.appendChild(defaultOptModel);
+
+            vehicles.forEach((vehicle) => {
+                if(vehicle.year == caliVeh.vehicles.year && vehicle.maker == caliVeh.vehicles.maker) {
+                    const optionModel = document.createElement("option");
+                    optionModel.value = vehicle.model;
+                    optionModel.text = vehicle.model;
+                    if(vehicle.id == caliVeh.vehicle_id)
+                        optionModel.selected = true;
+                    selectModel.appendChild(optionModel);
+                }
+            })
 
             // Engine column
             const divEngine = document.createElement("div");
@@ -673,13 +697,24 @@
             selectEngine.name = `vehicleEngine[${vehCount}]`;
             selectEngine.className = "form-select";
             selectEngine.id = `vehicleEngine[${vehCount}]`;
+            selectEngine.required = true;
             divEngine.appendChild(selectEngine);
 
             const defaultOptEngine = document.createElement("option");
             defaultOptEngine.value = "";
             defaultOptEngine.text = "Engine";
-            defaultOptEngine.selected = true;
             selectEngine.appendChild(defaultOptEngine);
+
+            vehicles.forEach((vehicle) => {
+                if(vehicle.year == caliVeh.vehicles.year && vehicle.maker == caliVeh.vehicles.maker && vehicle.model == caliVeh.vehicles.model) {
+                    const optionEngine = document.createElement("option");
+                    optionEngine.value = vehicle.id;
+                    optionEngine.text = vehicle.engine;
+                    if(vehicle.id == caliVeh.vehicle_id)
+                        optionEngine.selected = true;
+                    selectEngine.appendChild(optionEngine);
+                }
+            })
 
             if(vehCount > 0) {
                 // Add and Remove buttons
@@ -694,7 +729,7 @@
                 divButtons.appendChild(buttonAdd); */
 
                 const buttonRemove = document.createElement("a");
-                buttonRemove.className = "btn btn-danger btn-sm";
+                buttonRemove.className = "btn btn-danger btn-sm float-end";
                 buttonRemove.setAttribute("onclick", `removeVehicles(${vehCount})`);
                 buttonRemove.text = "-";
                 divButtons.appendChild(buttonRemove);
@@ -709,7 +744,7 @@
     function addVehicles() {
         // Create new row
         const divRow = document.createElement("div");
-        divRow.className = "row mb-3";
+        divRow.className = "row mb-3 gx-2";
         divRow.id = "row" + vehCount;
         divVehicles.appendChild(divRow);
 
@@ -803,7 +838,7 @@
         divButtons.appendChild(buttonAdd); */
 
         const buttonRemove = document.createElement("a");
-        buttonRemove.className = "btn btn-danger btn-sm";
+        buttonRemove.className = "btn btn-danger btn-sm float-end";
         buttonRemove.setAttribute("onclick", `removeVehicles(${vehCount})`);
         buttonRemove.text = "-";
         divButtons.appendChild(buttonRemove);
