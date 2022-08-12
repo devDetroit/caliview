@@ -152,6 +152,8 @@ class CalipersCRUDController extends Controller
             'centricPN' => 'required',
             'caliperFamily' => 'required'
         ]);
+        // $photoDesc = $request->photoDescription;
+        dd($request);
         $caliper = Calipers::find($id);
         $caliper->jh_part_number = $request->jhPN;
         $caliper->cardone_part_number = $request->cardonePN;
@@ -161,12 +163,12 @@ class CalipersCRUDController extends Controller
         $caliper->casting2 = $request->casting2;
         $caliper->bracket_casting = $request->bracketCasting;
         $caliper->updated_by = auth()->user()->id;
-        if (isset($request->caliperPhotos[0])) {
-            foreach ($request->caliperPhotos as $photo) {
+        if (isset($request->newPhotos[0])) {
+            foreach ($request->newPhotos as $photo) {
                 $photos = new CaliperPhotos;
                 $photoName = $caliper->id . '_' . date('YmdHis') . '.' . $photo->extension();
                 $photos->caliper_id = $caliper->id;
-                $photos->image = $photoName;
+                $photos->filename = $photoName;
                 $photos->created_by = auth()->user()->id;
                 $photos->updated_by = auth()->user()->id;
                 $photo->storeAs('public/calipers', $photoName);
@@ -218,6 +220,7 @@ class CalipersCRUDController extends Controller
      */
     public function destroy(Calipers $caliper)
     {
+        dd($caliper);
         $caliper->delete();
         return redirect()->route('calipers.index')
             ->with('success', 'The caliper has been deleted successfully.');

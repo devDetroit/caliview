@@ -159,7 +159,7 @@
         const mainForm = document.getElementById("extraComponents");
         const divRow = document.createElement("div");
         divRow.className = "row mb-3";
-        divRow.id = "row" + compCount;
+        divRow.id = "rowComp" + compCount;
         mainForm.appendChild(divRow);
 
         // Component column
@@ -234,7 +234,7 @@
     // Remove component forms
     function removeComponents(rowNumber) {
         const mainForm = document.getElementById("extraComponents");
-        const childRow = document.getElementById(`row${rowNumber}`);
+        const childRow = document.getElementById(`rowComp${rowNumber}`);
         mainForm.removeChild(childRow);
     }
 
@@ -348,7 +348,7 @@
         const mainForm = document.getElementById("extraVehicles");
         const divRow = document.createElement("div");
         divRow.className = "row mb-3";
-        divRow.id = "row" + vehCount;
+        divRow.id = "rowVeh" + vehCount;
         mainForm.appendChild(divRow);
 
         // Year column
@@ -369,7 +369,7 @@
         defaultOptYear.selected = true;
         selectYear.appendChild(defaultOptYear);
 
-        for (const i = new Date().getFullYear(); i >= 1960; i--) {
+        for (let i = new Date().getFullYear(); i >= 1960; i--) {
             const optionYear = document.createElement("option");
             optionYear.value = i;
             optionYear.text = i;
@@ -453,7 +453,7 @@
     // Remove vehicle forms
     function removeVehicles(rowNumber) {
         const mainForm = document.getElementById("extraVehicles");
-        const childRow = document.getElementById(`row${rowNumber}`);
+        const childRow = document.getElementById(`rowVeh${rowNumber}`);
         mainForm.removeChild(childRow);
     }
 </script>
