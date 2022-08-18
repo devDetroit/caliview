@@ -105,12 +105,18 @@
                         </div>
                         @endforeach
                         @endif
+                        @guest
+                        <div class="float-start">
+                            <a class="btn btn-danger" href="/">Go Back</a>
+                        </div>
+                        @else
                         <div class="float-end">
                             <a class="btn btn-primary btn" href="{{ route('calipers.edit', ['caliper' => $caliper->id]) }}" role="button">Edit</a>
                         </div>
                         <div class="float-start">
                             <a class="btn btn-danger" href="{{ route('calipers.index') }}">Go Back</a>
                         </div>
+                        @endguest
                     </form>
                 </div>
             </div>

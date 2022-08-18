@@ -153,7 +153,7 @@ class CalipersCRUDController extends Controller
             'caliperFamily' => 'required'
         ]);
         // $photoDesc = $request->photoDescription;
-        dd($request);
+        // dd($request);
         $caliper = Calipers::find($id);
         $caliper->jh_part_number = $request->jhPN;
         $caliper->cardone_part_number = $request->cardonePN;

@@ -1,12 +1,6 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\ComponentTypesCRUDController;
-use App\Http\Controllers\ComponentsCRUDController;
-use App\Http\Controllers\CaliperFamiliesCRUDController;
-use App\Http\Controllers\CalipersCRUDController;
-use App\Http\Controllers\CaliperPhotosCRUDController;
-use App\Http\Controllers\VehiclesCRUDController;
 
 /*
 |--------------------------------------------------------------------------
@@ -19,9 +13,7 @@ use App\Http\Controllers\VehiclesCRUDController;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', [App\Http\Controllers\DashboardController::class, 'index']);
 
 Auth::routes();
 

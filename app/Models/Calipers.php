@@ -58,4 +58,14 @@ class Calipers extends Model
     {
         return $this->hasMany(CaliperComponents::class, 'caliper_id');
     }
+
+    /**
+     * Declare relationship One to Many with Caliper Vehicles
+     *
+     * @return relationship
+     */
+    public function caliperVehicles()
+    {
+        return $this->hasMany(CaliperVehicles::class, 'caliper_id');
+    }
 }
