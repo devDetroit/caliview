@@ -130,10 +130,10 @@
                             <strong>Photo: {{ $caliper->id }}_{{ $photo->id }}</strong>
                         </div>
                         <a href="/storage/calipers/{{ $photo->filename }}" target="_blank"><img src="/storage/calipers/{{ $photo->filename }}" class="card-img-top"></a>
-                        <div class="card-body">
+                        <!-- <div class="card-body">
                             <h5 class="card-title">Description:</h5>
                             <p class="card-text">{{ $photo->description ?? 'No description available.' }}</p>
-                        </div>
+                        </div> -->
                     </div>
                 </div>
                 @endforeach

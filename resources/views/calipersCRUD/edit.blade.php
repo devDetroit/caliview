@@ -2,141 +2,141 @@
 
 @section('content')
 <div class="container">
-    <form action="{{ route('calipers.update', ['caliper' => $caliper->id]) }}" method="POST" enctype="multipart/form-data" id="mainForm">
-    @csrf
-    @method('PUT')
-        <div class="row justify-content-center">
+    <div class="row justify-content-center">
         @if(session('status'))
         <div class="alert alert-success mb-1 mt-1">
             {{ session('status') }}
         </div>
         @endif
-            <div class="col-md-6">
-                <div class="card">
-                    <div class="card-header">
-                        <strong>Edit Caliper {{ $caliper->jh_part_number }} / {{ $caliper->cardone_part_number }} / {{ $caliper->centric_part_number }}</strong>
-                    </div>
-                    <div class="card-body">
-                            <div class="row mb-3">    
-                                <div class="col-sm-4">
-                                    <label for="jhPN" class="form-label">JH Part No.</label>
-                                    <input type="text" name="jhPN" value="{{ $caliper->jh_part_number }}" class="form-control" id="jhPN">
-                                </div>
-                                <div class="col-sm-4">
-                                    <label for="cardonePN" class="form-label">Cardone Part No.</label>
-                                    <input type="text" name="cardonePN" value="{{ $caliper->cardone_part_number }}" class="form-control" id="cardonePN">
-                                </div>
-                                <div class="col-sm-4">
-                                    <label for="centricPN" class="form-label">Centric Part No.</label>
-                                    <input type="text" name="centricPN" value="{{ $caliper->centric_part_number }}" class="form-control" id="centricPN">
-                                </div>
-                            </div>
-                            <div class="mb-3">
-                                <label for="caliperFamily" class="form-label">Family</label>
-                                <select name="caliperFamily" class="form-select" id="caliperFamily" required>
-                                    <option value="">Select a Family</option>
-                                    @foreach($caliperFamilies as $family)
-                                    @if($caliper->family_id == $family->id)
-                                    <option selected value="{{ $family->id }}">{{ $family->family }}</option>
-                                    @else
-                                    <option value="{{ $family->id }}">{{ $family->family }}</option>
-                                    @endif
-                                    @endforeach
-                                </select>
-                            </div>
-                            <div class="mb-3">
-                                <label for="casting1" class="form-label">Casting Number 1</label>
-                                <input type="text" name="casting1" value="{{ $caliper->casting1 }}" class="form-control" id="casting1">
-                            </div>
-                            <div class="mb-3">
-                                <label for="casting2" class="form-label">Casting Number 2</label>
-                                <input type="text" name="casting2" value="{{ $caliper->casting2 }}" class="form-control" id="casting2">
-                            </div>
-                            <div class="mb-3">
-                                <label for="bracketCasting" class="form-label">Bracket Casting Number</label>
-                                <input type="text" name="bracketCasting" value="{{ $caliper->bracket_casting }}" class="form-control" id="bracketCasting">
-                            </div>
-                            <div class="mb-3">
-                                <label for="caliperPhotosMultiple" class="form-label">Upload Photos</label>
-                                <input name="newPhotos[]" class="form-control" type="file" id="caliperPhotosMultiple" multiple>
-                            </div>
-                            <div class="row">
-                                <h5 class="card-title"><strong>Related Components</strong></h5>
-                            </div>
-                            <div class="row gx-2">
-                                <div class="col-sm-4">
-                                    <label for="componentNo" class="form-label">Component</label>
-                                </div>
-                                <div class="col-sm-5">
-                                    <label for="componentMeasure" class="form-label">Measurements</label>
-                                </div>
-                                <div class="col-sm-2">
-                                    <label for="componentQuantity" class="form-label">Quantity</label>
-                                </div>
-                                <div class="col-sm-1">
-                                    <a class="btn btn-success btn-sm float-end" onclick="addComponents()">+</a>
-                                </div>
-                            </div>
-                            <div id="componentsList"></div>
-                            <div class="row">
-                                <h5 class="card-title"><strong>Compatible Vehicles</strong></h5>
-                            </div>
-                            <div class="row gx-2">
-                                <div class="col-sm-2">
-                                    <label for="vehicleYear" class="form-label">Year</label>
-                                </div>
-                                <div class="col-sm-3">
-                                    <label for="vehicleMaker" class="form-label">Maker</label>
-                                </div>
-                                <div class="col-sm-3">
-                                    <label for="vehicleModel" class="form-label">Model</label>
-                                </div>
-                                <div class="col-sm-3">
-                                    <label for="vehicleEngine" class="form-label">Engine</label>
-                                </div>
-                                <div class="col-sm-1 mt-1">
-                                    <a class="btn btn-success btn-sm float-end" onclick="addVehicles()">+</a>
-                                </div>
-                            </div>
-                            <div id="vehiclesList"></div>
-                            <div class="float-end">
-                                <button type="submit" class="btn btn-primary">Submit</button>
-                            </div>
-                            <div class="float-start">
-                                <a class="btn btn-danger" href="{{ route('calipers.show', ['caliper' => $caliper->id]) }}">Cancel</a>
-                            </div>
-                    </div>
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <strong>Edit Caliper {{ $caliper->jh_part_number }} / {{ $caliper->cardone_part_number }} / {{ $caliper->centric_part_number }}</strong>
                 </div>
-            </div>
-            <div class="col-md-6">
-                <div class="row row-cols-1 row-cols-md-2 g-4">
-                @for($i = 0; $i < count($caliperPhotos); $i++)
-                    <div class="col">
-                        <div class="card">
-                            <div class="card-header">
-                                <strong>Photo: {{ $caliper->id }}-{{ $caliperPhotos[$i]->id }}</strong>
-                                <div class="float-end">
-                                    <form action="{{ route('caliperPhotos.destroy', ['caliperPhoto' => $caliperPhotos[$i]->id]) }}" method="Post">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button class="btn btn-danger btn-sm" type="submit">Delete</button>
-                                    </form>
-                                </div>
+                <div class="card-body">
+                    <form action="{{ route('calipers.update', ['caliper' => $caliper->id]) }}" method="POST" enctype="multipart/form-data" id="mainForm">
+                    @csrf
+                    @method('PUT')
+                        <div class="row mb-3">    
+                            <div class="col-sm-4">
+                                <label for="jhPN" class="form-label">JH Part No.</label>
+                                <input type="text" name="jhPN" value="{{ $caliper->jh_part_number }}" class="form-control" id="jhPN">
                             </div>
-                            <a href="/storage/calipers/{{ $caliperPhotos[$i]->filename }}" target="_blank"><img src="/storage/calipers/{{ $caliperPhotos[$i]->filename }}" class="card-img-top"></a>
-                            <div class="card-body">
-                                <label for="photoDescription[{{$caliperPhotos[$i]->id}}]" class="form-label"><h5 class="card-title">Description:</h5></label>
-                                <p class="card-text">
-                                    <textarea name="photoDescription[{{$caliperPhotos[$i]->id}}]" value="{{ $caliperPhotos[$i]->description ?? '' }}" class="form-control" id="photoDescription[{{$caliperPhotos[$i]->id}}]" rows="3"></textarea>
-                                </p>
+                            <div class="col-sm-4">
+                                <label for="cardonePN" class="form-label">Cardone Part No.</label>
+                                <input type="text" name="cardonePN" value="{{ $caliper->cardone_part_number }}" class="form-control" id="cardonePN">
+                            </div>
+                            <div class="col-sm-4">
+                                <label for="centricPN" class="form-label">Centric Part No.</label>
+                                <input type="text" name="centricPN" value="{{ $caliper->centric_part_number }}" class="form-control" id="centricPN">
                             </div>
                         </div>
-                    </div>
-                @endfor
+                        <div class="mb-3">
+                            <label for="caliperFamily" class="form-label">Family</label>
+                            <select name="caliperFamily" class="form-select" id="caliperFamily" required>
+                                <option value="">Select a Family</option>
+                                @foreach($caliperFamilies as $family)
+                                @if($caliper->family_id == $family->id)
+                                <option selected value="{{ $family->id }}">{{ $family->family }}</option>
+                                @else
+                                <option value="{{ $family->id }}">{{ $family->family }}</option>
+                                @endif
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="casting1" class="form-label">Casting Number 1</label>
+                            <input type="text" name="casting1" value="{{ $caliper->casting1 }}" class="form-control" id="casting1">
+                        </div>
+                        <div class="mb-3">
+                            <label for="casting2" class="form-label">Casting Number 2</label>
+                            <input type="text" name="casting2" value="{{ $caliper->casting2 }}" class="form-control" id="casting2">
+                        </div>
+                        <div class="mb-3">
+                            <label for="bracketCasting" class="form-label">Bracket Casting Number</label>
+                            <input type="text" name="bracketCasting" value="{{ $caliper->bracket_casting }}" class="form-control" id="bracketCasting">
+                        </div>
+                        <div class="mb-3">
+                            <label for="caliperPhotosMultiple" class="form-label">Upload Photos</label>
+                            <input name="newPhotos[]" class="form-control" type="file" id="caliperPhotosMultiple" multiple>
+                        </div>
+                        <div class="row">
+                            <h5 class="card-title"><strong>Related Components</strong></h5>
+                        </div>
+                        <div class="row gx-2">
+                            <div class="col-sm-4">
+                                <label for="componentNo" class="form-label">Component</label>
+                            </div>
+                            <div class="col-sm-5">
+                                <label for="componentMeasure" class="form-label">Measurements</label>
+                            </div>
+                            <div class="col-sm-2">
+                                <label for="componentQuantity" class="form-label">Quantity</label>
+                            </div>
+                            <div class="col-sm-1">
+                                <a class="btn btn-success btn-sm float-end" onclick="addComponents()">+</a>
+                            </div>
+                        </div>
+                        <div id="componentsList"></div>
+                        <div class="row">
+                            <h5 class="card-title"><strong>Compatible Vehicles</strong></h5>
+                        </div>
+                        <div class="row gx-2">
+                            <div class="col-sm-2">
+                                <label for="vehicleYear" class="form-label">Year</label>
+                            </div>
+                            <div class="col-sm-3">
+                                <label for="vehicleMaker" class="form-label">Maker</label>
+                            </div>
+                            <div class="col-sm-3">
+                                <label for="vehicleModel" class="form-label">Model</label>
+                            </div>
+                            <div class="col-sm-3">
+                                <label for="vehicleEngine" class="form-label">Engine</label>
+                            </div>
+                            <div class="col-sm-1 mt-1">
+                                <a class="btn btn-success btn-sm float-end" onclick="addVehicles()">+</a>
+                            </div>
+                        </div>
+                        <div id="vehiclesList"></div>
+                        <div class="float-end">
+                            <button type="submit" class="btn btn-primary">Submit</button>
+                        </div>
+                        <div class="float-start">
+                            <a class="btn btn-danger" href="{{ route('calipers.show', ['caliper' => $caliper->id]) }}">Cancel</a>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>
-    </form>
+        <div class="col-md-6">
+            <div class="row row-cols-1 row-cols-md-2 g-4">
+            @for($i = 0; $i < count($caliperPhotos); $i++)
+                <div class="col">
+                    <div class="card">
+                        <div class="card-header">
+                            <strong>Photo: {{ $caliper->id }}-{{ $caliperPhotos[$i]->id }}</strong>
+                            <div class="float-end">
+                                <form action="{{ route('caliperPhotos.destroy', ['caliperPhoto' => $caliperPhotos[$i]->id]) }}" method="Post">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button class="btn btn-danger btn-sm" type="submit">Delete</button>
+                                </form>
+                            </div>
+                        </div>
+                        <a href="/storage/calipers/{{ $caliperPhotos[$i]->filename }}" target="_blank"><img src="/storage/calipers/{{ $caliperPhotos[$i]->filename }}" class="card-img-top"></a>
+                        <!-- <div class="card-body">
+                            <label for="photoDescription[{{$caliperPhotos[$i]->id}}]" class="form-label"><h5 class="card-title">Description:</h5></label>
+                            <p class="card-text">
+                                <textarea name="photoDescription[{{$caliperPhotos[$i]->id}}]" value="{{ $caliperPhotos[$i]->description ?? '' }}" class="form-control" id="photoDescription[{{$caliperPhotos[$i]->id}}]" rows="3"></textarea>
+                            </p>
+                        </div> -->
+                    </div>
+                </div>
+            @endfor
+            </div>
+        </div>
+    </div>
 </div>
 
 <script>

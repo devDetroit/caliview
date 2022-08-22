@@ -17,7 +17,7 @@ class DashboardController extends Controller
     public function index()
     {
         return view('dashboard', [
-            'calipers' => Calipers::with(['caliperFamilies', 'caliperComponents', 'caliperVehicles'])->orderBy('id')->get()
+            'calipers' => Calipers::with(['caliperFamilies', 'caliperComponents.Components', 'caliperVehicles.Vehicles'])->orderBy('id')->get()
         ]);
     }
 }
