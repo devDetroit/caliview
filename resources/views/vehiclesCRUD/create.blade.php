@@ -11,14 +11,14 @@
         <div class="col-md-8">
             <div class="card">
                 <div class="card-header">
-                    New Vehicle
+                    <h4><strong>New Vehicle</strong></h4>
                 </div>
                 <div class="card-body">
                     <form action="{{ route('vehicles.store') }}" method="POST">
                         @csrf
                         <div class="mb-3">
                             <label for="maker" class="form-label">Maker</label>
-                            <input type="text" name="maker" class="form-control" id="maker" maxlength="32" required>
+                            <input type="text" name="maker" class="form-control" id="maker" maxlength="32" required autofocus>
                         </div>
                         <div class="mb-3">
                             <label for="model" class="form-label">Model</label>

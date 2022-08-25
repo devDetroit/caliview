@@ -3,15 +3,23 @@
 @section('content')
 <div class="container">
     <div class="row justify-content-center">
-        @if(session('status'))
-        <div class="alert alert-success mb-1 mt-1">
-            {{ session('status') }}
+        @if($message = Session::get('success'))
+        <div class="alert alert-success">
+            <p>{{ $message }}</p>
+        </div>
+        @elseif($message = Session::get('failure'))
+        <div class="alert alert-danger">
+            <p>{{ $message }}</p>
+        </div>
+        @elseif($message = Session::get('alert'))
+        <div class="alert alert-warning">
+            <p>{{ $message }}</p>
         </div>
         @endif
         <div class="col-md-6">
             <div class="card">
                 <div class="card-header">
-                    <strong>{{ $caliper->jh_part_number }} / {{ $caliper->cardone_part_number }} / {{ $caliper->centric_part_number }} Caliper Details</strong>
+                    <h5><strong>{{ $caliper->jh_part_number }} / {{ $caliper->cardone_part_number }} / {{ $caliper->centric_part_number }} Caliper Details</strong></h5>
                 </div>
                 <div class="card-body">
                     <form>
@@ -125,11 +133,11 @@
             <div class="row row-cols-1 row-cols-md-2 g-4">
                 @foreach($caliperPhotos as $photo)
                 <div class="col">
-                    <div class="card">
+                    <div class="card h-100">
                         <div class="card-header">
                             <strong>Photo: {{ $caliper->id }}_{{ $photo->id }}</strong>
                         </div>
-                        <a href="/storage/calipers/{{ $photo->filename }}" target="_blank"><img src="/storage/calipers/{{ $photo->filename }}" class="card-img-top"></a>
+                        <a href="/storage/calipers/{{ $photo->filename }}" target="_blank"><img src="/storage/calipers/{{ $photo->filename }}" class="card-img-top" style="height: 12rem; width: 100%; object-fit: contain;"></a>
                         <!-- <div class="card-body">
                             <h5 class="card-title">Description:</h5>
                             <p class="card-text">{{ $photo->description ?? 'No description available.' }}</p>

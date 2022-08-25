@@ -11,14 +11,14 @@
         <div class="col-md-8">
             <div class="card">
                 <div class="card-header">
-                    New Component Type
+                    <h4><strong>New Component Type</strong></h4>
                 </div>
                 <div class="card-body">
                     <form action="{{ route('componentTypes.store') }}" method="POST">
                         @csrf
                         <div class="mb-3">
                             <label for="componentType" class="form-label">Type name</label>
-                            <input type="text" name="type" class="form-control" id="componentType" required>
+                            <input type="text" name="type" class="form-control" id="componentType" required autofocus>
                         </div>
                         <div class="float-end">
                             <button type="submit" class="btn btn-primary">Submit</button>

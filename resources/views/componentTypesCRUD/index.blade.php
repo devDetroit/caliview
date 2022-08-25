@@ -12,7 +12,7 @@
             <div class="card">
                 <div class="card-header">
                     <div class="float-start">
-                        <h2>Component Types</h2>
+                        <h4><strong>Component Types</strong></h4>
                     </div>
                     <div class="float-end">
                         <a class="btn btn-success" href="{{ route('componentTypes.create') }}">Create New Type</a>

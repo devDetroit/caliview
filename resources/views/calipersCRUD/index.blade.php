@@ -3,8 +3,16 @@
 @section('content')
 <div class="container-fluid">
     <div class="row">
-        @if ($message = Session::get('success'))
+        @if($message = Session::get('success'))
         <div class="alert alert-success">
+            <p>{{ $message }}</p>
+        </div>
+        @elseif($message = Session::get('failure'))
+        <div class="alert alert-danger">
+            <p>{{ $message }}</p>
+        </div>
+        @elseif($message = Session::get('alert'))
+        <div class="alert alert-warning">
             <p>{{ $message }}</p>
         </div>
         @endif
@@ -12,7 +20,7 @@
             <div class="card">
                 <div class="card-header">
                     <div class="float-start">
-                        <h2>Calipers</h2>
+                        <h4><strong>Calipers</strong></h4>
                     </div>
                     <div class="float-end">
                         <a class="btn btn-success" href="{{ route('calipers.create') }}">Create New Caliper</a>

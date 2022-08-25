@@ -12,7 +12,7 @@
             <div class="card">
                 <div class="card-header">
                     <div class="float-start">
-                        <h2>Vehicles</h2>
+                        <h4><strong>Vehicles</strong></h4>
                     </div>
                     <div class="float-end">
                         <a class="btn btn-success" href="{{ route('vehicles.create') }}">Add New Vehicle</a>

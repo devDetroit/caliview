@@ -11,7 +11,7 @@
         <div class="col-md-8">
             <div class="card">
                 <div class="card-header">
-                    Edit Vehicle
+                    <h4><strong>Edit Vehicle</strong></h4>
                 </div>
                 <div class="card-body">
                     <form action="{{ route('vehicles.update', ['vehicle' => $vehicle->id]) }}" method="POST">
@@ -19,7 +19,7 @@
                         @method('PUT')
                         <div class="mb-3">
                             <label for="maker" class="form-label">Maker</label>
-                            <input type="text" name="maker" value="{{ $vehicle->maker }}" class="form-control" id="maker" maxlength="32" required>
+                            <input type="text" name="maker" value="{{ $vehicle->maker }}" class="form-control" id="maker" maxlength="32" required autofocus>
                         </div>
                         <div class="mb-3">
                             <label for="model" class="form-label">Model</label>

@@ -11,7 +11,7 @@
         <div class="col-md-8">
             <div class="card">
                 <div class="card-header">
-                    Edit Caliper Family
+                    <h4><strong>Edit Caliper Family</strong></h4>
                 </div>
                 <div class="card-body">
                     <form action="{{ route('caliperFamilies.update', ['caliperFamily' => $caliperFamily->id]) }}" method="POST">
@@ -19,7 +19,7 @@
                         @method('PUT')
                         <div class="mb-3">
                             <label for="caliperFamily" class="form-label">Family name</label>
-                            <input type="text" name="family" value="{{ $caliperFamily->family }}" class="form-control" id="caliperFamily" required>
+                            <input type="text" name="family" value="{{ $caliperFamily->family }}" class="form-control" id="caliperFamily" required autofocus>
                         </div>
                         <div class="float-end">
                             <button type="submit" class="btn btn-primary">Submit</button>

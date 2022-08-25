@@ -11,7 +11,7 @@
         <div class="col-md-8">
             <div class="card">
                 <div class="card-header">
-                    Edit Component
+                    <h4><strong>Edit Component</strong></h4>
                 </div>
                 <div class="card-body">
                     <form action="{{ route('components.update', ['component' => $component->id]) }}" method="POST">
@@ -19,7 +19,7 @@
                         @method('PUT')
                         <div class="mb-3">
                             <label for="componentNumber" class="form-label">Part No.</label>
-                            <input type="text" name="componentNumber" value="{{ $component->component_number }}" class="form-control" id="componentNumber" required>
+                            <input type="text" name="componentNumber" value="{{ $component->component_number }}" class="form-control" id="componentNumber" required autofocus>
                         </div>
                         <div class="mb-3">
                             <label for="componentType" class="form-label">Type</label>

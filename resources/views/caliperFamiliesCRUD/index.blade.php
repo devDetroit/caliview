@@ -12,7 +12,7 @@
             <div class="card">
                 <div class="card-header">
                     <div class="float-start">
-                        <h2>Caliper Families</h2>
+                        <h4><strong>Caliper Families</strong></h4>
                     </div>
                     <div class="float-end">
                         <a class="btn btn-success" href="{{ route('caliperFamilies.create') }}">Create New Family</a>

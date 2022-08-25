@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\DB;
 use App\Models\Calipers;
 use App\Models\CaliperFamilies;
 use App\Models\CaliperPhotos;
@@ -10,6 +11,7 @@ use App\Models\Components;
 use App\Models\CaliperVehicles;
 use App\Models\Vehicles;
 use Illuminate\Http\Request;
+use Throwable;
 
 class CalipersCRUDController extends Controller
 {
@@ -47,59 +49,88 @@ class CalipersCRUDController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
-            'jhPN' => 'required',
-            'cardonePN' => 'required',
-            'centricPN' => 'required',
-            'caliperFamily' => 'required'
-        ]);
-        $caliper = new Calipers;
-        $caliper->jh_part_number = $request->jhPN;
-        $caliper->cardone_part_number = $request->cardonePN;
-        $caliper->centric_part_number = $request->centricPN;
-        $caliper->family_id = $request->caliperFamily;
-        $caliper->casting1 = $request->casting1;
-        $caliper->casting2 = $request->casting2;
-        $caliper->bracket_casting = $request->bracketCasting;
-        $caliper->created_by = auth()->user()->id;
-        $caliper->updated_by = auth()->user()->id;
-        $caliper->save();
-        if (isset($request->caliperPhotos[0])) {
-            foreach ($request->caliperPhotos as $photo) {
-                $photos = new CaliperPhotos;
-                $photoName = $caliper->id . '_' . date('YmdHis') . '.' . $photo->extension();
-                $photos->caliper_id = $caliper->id;
-                $photos->filename = $photoName;
-                $photos->created_by = auth()->user()->id;
-                $photos->updated_by = auth()->user()->id;
-                $photo->storeAs('public/calipers', $photoName);
-                $photos->save();
+        DB::beginTransaction();
+        try {
+            $request->validate([
+                'jhPN' => 'required',
+                'cardonePN' => 'required',
+                'centricPN' => 'required',
+                'caliperFamily' => 'required'
+            ]);
+            $caliper = new Calipers;
+            $caliper->jh_part_number = $request->jhPN;
+            $caliper->cardone_part_number = $request->cardonePN;
+            $caliper->centric_part_number = $request->centricPN;
+            $caliper->family_id = $request->caliperFamily;
+            $caliper->casting1 = $request->casting1;
+            $caliper->casting2 = $request->casting2;
+            $caliper->bracket_casting = $request->bracketCasting;
+            $caliper->created_by = auth()->user()->id;
+            $caliper->updated_by = auth()->user()->id;
+            $caliper->save();
+        } catch(Throwable $e) {
+            return redirect()->route('calipers.index')
+                ->with('failure', "There was an error creating the caliper, please try again or contact IT with the data you're trying to input.");
+        }
+        if(isset($request->caliperPhotos[0])) {
+            try {
+                foreach($request->caliperPhotos as $photo) {
+                    $photos = new CaliperPhotos;
+                    $photoName = $caliper->id . '_' . date('YmdHis') . '.' . $photo->extension();
+                    $photos->caliper_id = $caliper->id;
+                    $photos->filename = $photoName;
+                    $photos->created_by = auth()->user()->id;
+                    $photos->updated_by = auth()->user()->id;
+                    $photo->storeAs('public/calipers', $photoName);
+                    $photos->save();
+                }
+            } catch(Throwable $e) {
+                DB::rollBack();
+                return redirect()->route('calipers.index')
+                    ->with('failure', "There was an issue uploading the photos, please try again or contact IT.");
             }
         }
-        $component = array_values($request->componentNo);
-        $quantity = array_values($request->componentQuantity);
-        if (isset($request->componentNo[0])) {
-            for ($i = 0; $i < count($component); $i++) {
-                $caliperComp = new CaliperComponents;
-                $caliperComp->caliper_id = $caliper->id;
-                $caliperComp->component_id = $component[$i];
-                $caliperComp->quantity = $quantity[$i];
-                $caliperComp->created_by = auth()->user()->id;
-                $caliperComp->updated_by = auth()->user()->id;
-                $caliperComp->save();
+        if(isset($request->componentNo[0])) {
+            try {
+                $component = array_values($request->componentNo);
+                $quantity = array_values($request->componentQuantity);
+                for($i = 0; $i < count($component); $i++) {
+                    if(isset($component[$i])) {
+                        $caliperComp = new CaliperComponents;
+                        $caliperComp->caliper_id = $caliper->id;
+                        $caliperComp->component_id = $component[$i];
+                        $caliperComp->quantity = $quantity[$i];
+                        $caliperComp->created_by = auth()->user()->id;
+                        $caliperComp->updated_by = auth()->user()->id;
+                        $caliperComp->save();
+                    }
+                }
+            } catch(Throwable $e) {
+                DB::rollBack();
+                return redirect()->route('calipers.index')
+                    ->with('failure', "There was an issue saving the components, please try again or contact IT.");
             }
         }
-        $vehicle = array_values($request->vehicleEngine);
-        if (isset($vehicle[0])) {
-            for ($i = 0; $i < count($vehicle); $i++) {
-                $caliperVeh = new CaliperVehicles();
-                $caliperVeh->caliper_id = $caliper->id;
-                $caliperVeh->vehicle_id = $vehicle[$i];
-                $caliperVeh->created_by = auth()->user()->id;
-                $caliperVeh->updated_by = auth()->user()->id;
-                $caliperVeh->save();
+        if(isset($request->vehicleEngine[0])) {
+            try {
+                $vehicle = array_values($request->vehicleEngine);
+                for($i = 0; $i < count($vehicle); $i++) {
+                    if(isset($vehicle[$i])) {
+                        $caliperVeh = new CaliperVehicles();
+                        $caliperVeh->caliper_id = $caliper->id;
+                        $caliperVeh->vehicle_id = $vehicle[$i];
+                        $caliperVeh->created_by = auth()->user()->id;
+                        $caliperVeh->updated_by = auth()->user()->id;
+                        $caliperVeh->save();
+                    }
+                }
+            } catch(Throwable $e) {
+                DB::rollBack();
+                return redirect()->route('calipers.index')
+                    ->with('failure', "There was an issue saving the vehicles, please try again or contact IT.");
             }
         }
+        DB::commit();
         return redirect()->route('calipers.index')
             ->with('success', 'The caliper has been created successfully.');
     }
@@ -146,68 +177,96 @@ class CalipersCRUDController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $request->validate([
-            'jhPN' => 'required',
-            'cardonePN' => 'required',
-            'centricPN' => 'required',
-            'caliperFamily' => 'required'
-        ]);
-        // $photoDesc = $request->photoDescription;
-        // dd($request);
-        $caliper = Calipers::find($id);
-        $caliper->jh_part_number = $request->jhPN;
-        $caliper->cardone_part_number = $request->cardonePN;
-        $caliper->centric_part_number = $request->centricPN;
-        $caliper->family_id = $request->caliperFamily;
-        $caliper->casting1 = $request->casting1;
-        $caliper->casting2 = $request->casting2;
-        $caliper->bracket_casting = $request->bracketCasting;
-        $caliper->updated_by = auth()->user()->id;
-        if (isset($request->newPhotos[0])) {
-            foreach ($request->newPhotos as $photo) {
-                $photos = new CaliperPhotos;
-                $photoName = $caliper->id . '_' . date('YmdHis') . '.' . $photo->extension();
-                $photos->caliper_id = $caliper->id;
-                $photos->filename = $photoName;
-                $photos->created_by = auth()->user()->id;
-                $photos->updated_by = auth()->user()->id;
-                $photo->storeAs('public/calipers', $photoName);
-                $photos->save();
+        DB::beginTransaction();
+        try {
+            $request->validate([
+                'jhPN' => 'required',
+                'cardonePN' => 'required',
+                'centricPN' => 'required',
+                'caliperFamily' => 'required'
+            ]);
+            $caliper = Calipers::find($id);
+            $caliper->jh_part_number = $request->jhPN;
+            $caliper->cardone_part_number = $request->cardonePN;
+            $caliper->centric_part_number = $request->centricPN;
+            $caliper->family_id = $request->caliperFamily;
+            $caliper->casting1 = $request->casting1;
+            $caliper->casting2 = $request->casting2;
+            $caliper->bracket_casting = $request->bracketCasting;
+            $caliper->updated_by = auth()->user()->id;
+            $caliper->save();
+        } catch(Throwable $e) {
+            DB::rollBack();
+            return redirect()->route('calipers.show', compact('caliper'))
+                ->with('failure', "There was an error updating the caliper, please try again or contact IT with the data you're trying to input.");
+        }
+        if(isset($request->newPhotos[0])) {
+            try {
+                foreach($request->newPhotos as $photo) {
+                    $photos = new CaliperPhotos;
+                    $photoName = $caliper->id . '_' . date('YmdHis') . '.' . $photo->extension();
+                    $photos->caliper_id = $caliper->id;
+                    $photos->filename = $photoName;
+                    $photos->created_by = auth()->user()->id;
+                    $photos->updated_by = auth()->user()->id;
+                    $photo->storeAs('public/calipers', $photoName);
+                    $photos->save();
+                }
+            } catch(Throwable $e) {
+                DB::rollBack();
+                return redirect()->route('calipers.show', compact('caliper'))
+                    ->with('failure', "There was an issue uploading the photos, please try again or contact IT.");
             }
         }
-        $component = array_values($request->componentNo);
-        $quantity = array_values($request->componentQuantity);
-        if (isset($request->componentNo[0])) {
-            $caliperComponents = CaliperComponents::where('caliper_id', $id)->get();
-            foreach ($caliperComponents as $caliComp) {
-                CaliperComponents::where('caliper_id', $caliper->id)->delete();
-            }
-            for ($i = 0; $i < count($component); $i++) {
-                $caliperComp = new CaliperComponents;
-                $caliperComp->caliper_id = $caliper->id;
-                $caliperComp->component_id = $component[$i];
-                $caliperComp->quantity = $quantity[$i];
-                $caliperComp->created_by = auth()->user()->id;
-                $caliperComp->updated_by = auth()->user()->id;
-                $caliperComp->save();
-            }
-        }
-        $vehicle = array_values($request->vehicleEngine);
-        if (isset($vehicle[0])) {
-            $caliperVehicles = CaliperVehicles::where('caliper_id', $id)->get();
-            foreach ($caliperVehicles as $caliComp) {
-                CaliperVehicles::where('caliper_id', $id)->delete();
-            }
-            for ($i = 0; $i < count($vehicle); $i++) {
-                $caliperVeh = new CaliperVehicles();
-                $caliperVeh->caliper_id = $caliper->id;
-                $caliperVeh->vehicle_id = $vehicle[$i];
-                $caliperVeh->created_by = auth()->user()->id;
-                $caliperVeh->updated_by = auth()->user()->id;
-                $caliperVeh->save();
+        if(isset($request->componentNo[0])) {
+            try {
+                $component = array_values($request->componentNo);
+                $quantity = array_values($request->componentQuantity);
+                $caliperComponents = CaliperComponents::where('caliper_id', $id)->get();
+                foreach($caliperComponents as $caliComp) {
+                    CaliperComponents::where('caliper_id', $caliper->id)->delete();
+                }
+                for($i = 0; $i < count($component); $i++) {
+                    if(isset($component[$i])) {
+                        $caliperComp = new CaliperComponents;
+                        $caliperComp->caliper_id = $caliper->id;
+                        $caliperComp->component_id = $component[$i];
+                        $caliperComp->quantity = $quantity[$i];
+                        $caliperComp->created_by = auth()->user()->id;
+                        $caliperComp->updated_by = auth()->user()->id;
+                        $caliperComp->save();
+                    }
+                }
+            } catch(Throwable $e) {
+                DB::rollBack();
+                return redirect()->route('calipers.show', compact('caliper'))
+                    ->with('failure', "There was an issue saving the components, please try again or contact IT.");
             }
         }
-        $caliper->save();
+        if(isset($request->vehicleEngine[0])) {
+            try {
+                $vehicle = array_values($request->vehicleEngine);
+                $caliperVehicles = CaliperVehicles::where('caliper_id', $id)->get();
+                foreach($caliperVehicles as $caliComp) {
+                    CaliperVehicles::where('caliper_id', $id)->delete();
+                }
+                for($i = 0; $i < count($vehicle); $i++) {
+                    if(isset($vehicle[$i])) {
+                        $caliperVeh = new CaliperVehicles();
+                        $caliperVeh->caliper_id = $caliper->id;
+                        $caliperVeh->vehicle_id = $vehicle[$i];
+                        $caliperVeh->created_by = auth()->user()->id;
+                        $caliperVeh->updated_by = auth()->user()->id;
+                        $caliperVeh->save();
+                    }
+                }
+            } catch(Throwable $e) {
+                DB::rollBack();
+                return redirect()->route('calipers.show', compact('caliper'))
+                    ->with('failure', "There was an issue saving the vehicles, please try again or contact IT.");
+            }
+        }
+        DB::commit();
         return redirect()->route('calipers.show', compact('caliper'))
             ->with('success', 'The caliper has been updated successfully.');
     }
@@ -220,7 +279,6 @@ class CalipersCRUDController extends Controller
      */
     public function destroy(Calipers $caliper)
     {
-        dd($caliper);
         $caliper->delete();
         return redirect()->route('calipers.index')
             ->with('success', 'The caliper has been deleted successfully.');
