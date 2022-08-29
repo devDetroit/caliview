@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Vehicles;
 use Illuminate\Http\Request;
+use Throwable;
 
 class VehiclesCRUDController extends Controller
 {
@@ -47,18 +48,23 @@ class VehiclesCRUDController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
-            'maker' => 'required',
-            'model' => 'required',
-            'year' => 'required',
-            'engine' => 'required'
-        ]);
-        $vehicle = new Vehicles;
-        $vehicle->maker = $request->maker;
-        $vehicle->model = $request->model;
-        $vehicle->year = $request->year;
-        $vehicle->engine = $request->engine;
-        $vehicle->save();
+        try {
+            $request->validate([
+                'maker' => 'required',
+                'model' => 'required',
+                'year' => 'required',
+                'engine' => 'required'
+            ]);
+            $vehicle = new Vehicles;
+            $vehicle->maker = $request->maker;
+            $vehicle->model = $request->model;
+            $vehicle->year = $request->year;
+            $vehicle->engine = $request->engine;
+            $vehicle->save();
+        } catch(Throwable $e) {
+            return redirect()->route('vehicles.index')
+                ->with('failure', "There was an error creating the vehicle, please try again or contact IT with the data you're trying to input.");    
+        }
         return redirect()->route('vehicles.index')
             ->with('success', 'The vehicle has been added successfully.');
     }
@@ -94,18 +100,23 @@ class VehiclesCRUDController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $request->validate([
-            'maker' => 'required',
-            'model' => 'required',
-            'year' => 'required',
-            'engine' => 'required'
-        ]);
-        $vehicle = Vehicles::find($id);
-        $vehicle->maker = $request->maker;
-        $vehicle->model = $request->model;
-        $vehicle->year = $request->year;
-        $vehicle->engine = $request->engine;
-        $vehicle->save();
+        try {
+            $request->validate([
+                'maker' => 'required',
+                'model' => 'required',
+                'year' => 'required',
+                'engine' => 'required'
+            ]);
+            $vehicle = Vehicles::find($id);
+            $vehicle->maker = $request->maker;
+            $vehicle->model = $request->model;
+            $vehicle->year = $request->year;
+            $vehicle->engine = $request->engine;
+            $vehicle->save();
+        } catch(Throwable $e) {
+            return redirect()->route('vehicles.index')
+                ->with('failure', "There was an error updating the vehicle, please try again or contact IT with the data you're trying to input.");    
+        }
         return redirect()->route('vehicles.index')
             ->with('success', 'The vehicle has been updated successfully.');
     }

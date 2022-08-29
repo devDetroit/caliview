@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Components;
 use App\Models\ComponentTypes;
 use Illuminate\Http\Request;
+use Throwable;
 
 class ComponentsCRUDController extends Controller
 {
@@ -50,18 +51,23 @@ class ComponentsCRUDController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
-            'componentNumber' => 'required',
-            'componentType' => 'required',
-            'measure' => 'required'
-        ]);
-        $component = new Components;
-        $component->component_number = $request->componentNumber;
-        $component->type_id = $request->componentType;
-        $component->measure = $request->measure;
-        $component->created_by = auth()->user()->id;
-        $component->updated_by = auth()->user()->id;
-        $component->save();
+        try {
+            $request->validate([
+                'componentNumber' => 'required',
+                'componentType' => 'required',
+                'measure' => 'required'
+            ]);
+            $component = new Components;
+            $component->component_number = $request->componentNumber;
+            $component->type_id = $request->componentType;
+            $component->measure = $request->measure;
+            $component->created_by = auth()->user()->id;
+            $component->updated_by = auth()->user()->id;
+            $component->save();
+        } catch(Throwable $e) {
+            return redirect()->route('components.index')
+                ->with('failure', "There was an error creating the component, please try again or contact IT with the data you're trying to input.");    
+        }
         return redirect()->route('components.index')
             ->with('success', 'The component has been created successfully.');
     }
@@ -99,17 +105,23 @@ class ComponentsCRUDController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $request->validate([
-            'componentNumber' => 'required',
-            'componentType' => 'required',
-            'measure' => 'required'
-        ]);
-        $component = Components::find($id);
-        $component->component_number = $request->componentNumber;
-        $component->type_id = $request->componentType;
-        $component->measure = $request->measure;
-        $component->updated_by = auth()->user()->id;
-        $component->save();
+        try {
+            $request->validate([
+                'componentNumber' => 'required',
+                'componentType' => 'required',
+                'measure' => 'required'
+            ]);
+            $component = Components::find($id);
+            $component->component_number = $request->componentNumber;
+            $component->type_id = $request->componentType;
+            $component->measure = $request->measure;
+            $component->created_by = auth()->user()->id;
+            $component->updated_by = auth()->user()->id;
+            $component->save();
+        } catch(Throwable $e) {
+            return redirect()->route('components.index')
+                ->with('failure', "There was an error updating the component, please try again or contact IT with the data you're trying to input.");    
+        }
         return redirect()->route('components.index')
             ->with('success', 'The component has been updated successfully.');
     }

@@ -142,6 +142,38 @@
 <script>
     //--------------------COMPONENTS--------------------\\
     const components = <?php echo json_encode($components); ?>;
+    
+    // Autofill measure when selecting a Component and switch requirement on Quantity
+    function autofillMeasure(id) {
+        if (event.target.value == "") {
+            document.getElementById(`componentMeasure[${id}]`).value = "";
+            document.getElementById(`componentQuantity[${id}]`).removeAttribute("required");
+            // Run checkComponents to re-enable the deselected Component
+            checkComponents();
+        } else {
+            document.getElementById(`componentMeasure[${id}]`).value = components[(event.target.value) - 1].measure;
+            document.getElementById(`componentQuantity[${id}]`).setAttribute("required", "");
+            // Run checkComponents to disable the selected Component
+            checkComponents();
+        }
+    }
+    
+    // Prevent from choosing duplicate components
+    function checkComponents() {
+        const options = document.getElementsByName("componentOption");
+        options.forEach(option => {
+            option.readOnly = false;
+        });
+        const compSelects = divComponents.getElementsByTagName("select");
+        if(compSelects.length > 1) {
+            for(const select of compSelects) {
+                options.forEach(option => {
+                    if(option.value == select.value)
+                        option.readOnly = true;
+                });
+            }
+        }
+    }
 
     // Generate current component forms
     let compCount = 0; //Counter for the number of components added
@@ -161,10 +193,10 @@
         divRow.appendChild(divComponentNo);
 
         const selectComponentNo = document.createElement("select");
-        selectComponentNo.name = "componentNo";
+        selectComponentNo.name = `componentNo[${compCount}]`;
         selectComponentNo.className = "form-select";
         selectComponentNo.id = `componentNo[${compCount}]`;
-        selectComponentNo.setAttribute("onchange", `checkComponents(${compCount})`)
+        selectComponentNo.setAttribute("onchange", `autofillMeasure(${compCount})`)
         selectComponentNo.required = true;
         divComponentNo.appendChild(selectComponentNo);
 
@@ -188,7 +220,7 @@
         divRow.appendChild(divComponentMeasure);
 
         const inputComponentMeasure = document.createElement("input");
-        inputComponentMeasure.name = "componentMeasure";
+        inputComponentMeasure.name = `componentMeasure[${compCount}]`;
         inputComponentMeasure.className = "form-control";
         inputComponentMeasure.id = `componentMeasure[${compCount}]`;
         inputComponentMeasure.readOnly = true;
@@ -200,9 +232,12 @@
         divRow.appendChild(divComponentQty);
 
         const inputComponentQty = document.createElement("input");
-        inputComponentQty.name = "componentQuantity";
+        inputComponentQty.type = "number";
+        inputComponentQty.name = `componentQuantity[${compCount}]`;
         inputComponentQty.className = "form-control";
         inputComponentQty.id = `componentQuantity[${compCount}]`;
+        inputComponentQty.min = 1;
+        inputComponentQty.max = 100;
         divComponentQty.appendChild(inputComponentQty);
 
         // Add to counter
@@ -220,10 +255,10 @@
             divRow.appendChild(divComponentNo);
 
             const selectComponentNo = document.createElement("select");
-            selectComponentNo.name = "componentNo";
+            selectComponentNo.name = `componentNo[${compCount}]`;
             selectComponentNo.className = "form-select";
             selectComponentNo.id = `componentNo[${compCount}]`;
-            selectComponentNo.setAttribute("onchange", `checkComponents(${compCount})`)
+            selectComponentNo.setAttribute("onchange", `autofillMeasure(${compCount})`)
             selectComponentNo.required = true;
             divComponentNo.appendChild(selectComponentNo);
 
@@ -248,7 +283,7 @@
             divRow.appendChild(divComponentMeasure);
 
             const inputComponentMeasure = document.createElement("input");
-            inputComponentMeasure.name = "componentMeasure";
+            inputComponentMeasure.name = `componentMeasure[${compCount}]`;
             inputComponentMeasure.className = "form-control";
             inputComponentMeasure.id = `componentMeasure[${compCount}]`;
             inputComponentMeasure.value = caliperComponents[compCount].components.measure;
@@ -261,9 +296,12 @@
             divRow.appendChild(divComponentQty);
 
             const inputComponentQty = document.createElement("input");
-            inputComponentQty.name = "componentQuantity";
+            inputComponentQty.type = "number";
+            inputComponentQty.name = `componentQuantity[${compCount}]`;
             inputComponentQty.className = "form-control";
             inputComponentQty.id = `componentQuantity[${compCount}]`;
+            inputComponentQty.min = 1;
+            inputComponentQty.max = 100;
             inputComponentQty.value = caliperComponents[compCount].quantity;
             inputComponentQty.required = true;
             divComponentQty.appendChild(inputComponentQty);
@@ -290,37 +328,9 @@
             // Add to counter
             compCount += 1;
         })
-    }
-    
-    // Autofill measure when selecting a Component and switch requirement on Quantity
-    function autofillMeasure(id) {
-        if (event.target.value == "") {
-            document.getElementById(`componentMeasure[${id}]`).value = "";
-            document.getElementById(`componentQuantity[${id}]`).removeAttribute("required");
-        } else {
-            document.getElementById(`componentMeasure[${id}]`).value = components[(event.target.value) - 1].measure;
-            document.getElementById(`componentQuantity[${id}]`).setAttribute("required", "");
-        }
-    }
-    
-    // Prevent from choosing duplicate components
-    function checkComponents(id) {
-        const options = document.getElementsByName("componentOption");
-        options.forEach(option => {
-            option.disabled = false;
-        });
-        const compSelects = document.getElementsByName("componentNo");
-        if(compSelects.length > 1) {
-            compSelects.forEach(select => {
-                if(select.id != event.target.id) {
-                    options.forEach(option => {
-                        if(option.value == event.target.value || option.value == select.value)
-                            option.disabled = true;
-                    });
-                }
-            });
-        }
-        autofillMeasure(id);
+
+        // Run checkComponents after creating them to disable the ones already chosen
+        checkComponents();
     }
 
     // Add new component forms
@@ -337,10 +347,10 @@
         divRow.appendChild(divComponentNo);
 
         const selectComponentNo = document.createElement("select");
-        selectComponentNo.name = "componentNo";
+        selectComponentNo.name = `componentNo[${compCount}]`;
         selectComponentNo.className = "form-select";
         selectComponentNo.id = `componentNo[${compCount}]`;
-        selectComponentNo.setAttribute("onchange", `checkComponents(${compCount})`)
+        selectComponentNo.setAttribute("onchange", `autofillMeasure(${compCount})`)
         divComponentNo.appendChild(selectComponentNo);
 
         const defaultOptComponentNo = document.createElement("option");
@@ -363,7 +373,7 @@
         divRow.appendChild(divComponentMeasure);
 
         const inputComponentMeasure = document.createElement("input");
-        inputComponentMeasure.name = "componentMeasure";
+        inputComponentMeasure.name = `componentMeasure[${compCount}]`;
         inputComponentMeasure.className = "form-control";
         inputComponentMeasure.id = `componentMeasure[${compCount}]`;
         inputComponentMeasure.readOnly = true;
@@ -375,9 +385,12 @@
         divRow.appendChild(divComponentQty);
 
         const inputComponentQty = document.createElement("input");
-        inputComponentQty.name = "componentQuantity";
+        inputComponentQty.type = "number";
+        inputComponentQty.name = `componentQuantity[${compCount}]`;
         inputComponentQty.className = "form-control";
         inputComponentQty.id = `componentQuantity[${compCount}]`;
+        inputComponentQty.min = 1;
+        inputComponentQty.max = 100;
         divComponentQty.appendChild(inputComponentQty);
 
         // Add and Remove buttons
@@ -397,6 +410,9 @@
         buttonRemove.text = "-";
         divButtons.appendChild(buttonRemove);
 
+        // Run checkComponents to disable already chosen options on newly created row
+        checkComponents();
+
         // Add to counter
         compCount += 1;
     }
@@ -405,6 +421,8 @@
     function removeComponents(rowNumber) {
         const childRow = document.getElementById(`rowComp${rowNumber}`);
         divComponents.removeChild(childRow);
+        // After deleting the row, run checkComponents to re-enable the Component that was deleted
+        checkComponents();
     }
 
     //--------------------VEHICLES--------------------\\
@@ -414,6 +432,23 @@
     let vehCount = 0; // Counter for the number of vehicles added
     const caliperVehicles = <?php echo json_encode($caliperVehicles); ?>;
     const divVehicles = document.getElementById("vehiclesList");
+
+    // Prevent from choosing duplicate vehicles
+    function checkVehicles() {
+        const options = document.getElementsByName("engineOption");
+        options.forEach(option => {
+            option.readOnly = false;
+        });
+        const vehSelects = document.getElementById("vehiclesList").querySelectorAll(`[name^="vehicleEngine"]`);
+        if(vehSelects.length > 1) {
+            vehSelects.forEach(select => {
+                options.forEach(option => {
+                    if(option.value == select.value)
+                        option.readOnly = true;
+                });
+            });
+        }
+    }
     
     if (caliperVehicles.length == 0 || caliperVehicles[0] === null) {
         // Create new row
@@ -428,7 +463,7 @@
         divRow.appendChild(divYear);
 
         const selectYear = document.createElement("select");
-        selectYear.name = "vehicleYear";
+        selectYear.name = `vehicleYear[${vehCount}]`;
         selectYear.className = "form-select";
         selectYear.id = `vehicleYear[${vehCount}]`;
         selectYear.setAttribute("onchange", `autofillMakers(${vehCount})`)
@@ -453,7 +488,7 @@
         divRow.appendChild(divMaker);
 
         const selectMaker = document.createElement("select");
-        selectMaker.name = "vehicleMaker";
+        selectMaker.name = `vehicleMaker[${vehCount}]`;
         selectMaker.className = "form-select";
         selectMaker.id = `vehicleMaker[${vehCount}]`;
         selectMaker.setAttribute("onchange", `autofillModels(${vehCount})`)
@@ -471,7 +506,7 @@
         divRow.appendChild(divModel);
 
         const selectModel = document.createElement("select");
-        selectModel.name = "vehicleModel";
+        selectModel.name = `vehicleModel[${vehCount}]`;
         selectModel.className = "form-select";
         selectModel.id = `vehicleModel[${vehCount}]`;
         selectModel.setAttribute("onchange", `autofillEngines(${vehCount})`)
@@ -489,7 +524,7 @@
         divRow.appendChild(divEngine);
 
         const selectEngine = document.createElement("select");
-        selectEngine.name = "vehicleEngine";
+        selectEngine.name = `vehicleEngine[${vehCount}]`;
         selectEngine.className = "form-select";
         selectEngine.id = `vehicleEngine[${vehCount}]`;
         divEngine.appendChild(selectEngine);
@@ -535,7 +570,7 @@
             divRow.appendChild(divYear);
 
             const selectYear = document.createElement("select");
-            selectYear.name = "vehicleYear";
+            selectYear.name = `vehicleYear[${vehCount}]`;
             selectYear.className = "form-select";
             selectYear.id = `vehicleYear[${vehCount}]`;
             selectYear.setAttribute("onchange", `autofillMakers(${vehCount})`);
@@ -561,7 +596,7 @@
             divRow.appendChild(divMaker);
 
             const selectMaker = document.createElement("select");
-            selectMaker.name = "vehicleMaker";
+            selectMaker.name = `vehicleMaker[${vehCount}]`;
             selectMaker.className = "form-select";
             selectMaker.id = `vehicleMaker[${vehCount}]`;
             selectMaker.setAttribute("onchange", `autofillModels(${vehCount})`);
@@ -590,7 +625,7 @@
             divRow.appendChild(divModel);
 
             const selectModel = document.createElement("select");
-            selectModel.name = "vehicleModel";
+            selectModel.name = `vehicleModel[${vehCount}]`;
             selectModel.className = "form-select";
             selectModel.id = `vehicleModel[${vehCount}]`;
             selectModel.setAttribute("onchange", `autofillEngines(${vehCount})`);
@@ -619,7 +654,7 @@
             divRow.appendChild(divEngine);
 
             const selectEngine = document.createElement("select");
-            selectEngine.name = "vehicleEngine";
+            selectEngine.name = `vehicleEngine[${vehCount}]`;
             selectEngine.className = "form-select";
             selectEngine.id = `vehicleEngine[${vehCount}]`;
             selectEngine.required = true;
@@ -661,9 +696,15 @@
                 divButtons.appendChild(buttonRemove);
             }
 
+            // Run checkVehicles after creating them to disable the ones already chosen
+            checkVehicles()
+
             // Add to counter
             vehCount += 1;
         })
+
+        // Run checkVehicles after creating them to disable the ones already chosen
+        checkVehicles()
     }    
     
     // Autofill Makers when selecting a Year and switch requirement on the rest of the form
@@ -764,26 +805,8 @@
             defaultOptEngine.selected = true;
             selectEngine.appendChild(defaultOptEngine);
         }
-    }
-
-    // Prevent from choosing duplicate vehicles
-    function checkVehicles(id) {
-        const options = document.getElementsByName("engineOption");
-        options.forEach(option => {
-            option.disabled = false;
-        });
-        autofillEngines(id);
-        const vehSelects = document.getElementsByName("vehicleEngine");
-        if(vehSelects.length > 1) {
-            vehSelects.forEach(select => {
-                if(select.id != event.target.id) {
-                    options.forEach(option => {
-                        if(option.value == event.target.value || option.value == select.value)
-                            option.disabled = true;
-                    });
-                }
-            });
-        }
+        // Run checkVehicles to disable the newly added Engine options that have already been choosen
+        checkVehicles();
     }
 
     // Add new vehicle forms
@@ -897,6 +920,8 @@
     function removeVehicles(rowNumber) {
         const childRow = document.getElementById(`rowVeh${rowNumber}`);
         divVehicles.removeChild(childRow);
+        // After deleting the row, run checkVehicles to re-enable the Engine that was deleted
+        checkVehicles();
     }
 </script>
 @endsection

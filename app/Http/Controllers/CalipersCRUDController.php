@@ -55,7 +55,9 @@ class CalipersCRUDController extends Controller
                 'jhPN' => 'required',
                 'cardonePN' => 'required',
                 'centricPN' => 'required',
-                'caliperFamily' => 'required'
+                'caliperFamily' => 'required',
+                'componentNo' => 'required',
+                'componentQuantity' => 'required'
             ]);
             $caliper = new Calipers;
             $caliper->jh_part_number = $request->jhPN;
@@ -183,7 +185,9 @@ class CalipersCRUDController extends Controller
                 'jhPN' => 'required',
                 'cardonePN' => 'required',
                 'centricPN' => 'required',
-                'caliperFamily' => 'required'
+                'caliperFamily' => 'required',
+                'componentNo' => 'required',
+                'componentQuantity' => 'required'
             ]);
             $caliper = Calipers::find($id);
             $caliper->jh_part_number = $request->jhPN;

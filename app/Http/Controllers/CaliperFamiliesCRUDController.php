@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\CaliperFamilies;
 use Illuminate\Http\Request;
+use Throwable;
 
 class CaliperFamiliesCRUDController extends Controller
 {
@@ -47,12 +48,17 @@ class CaliperFamiliesCRUDController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
-            'family' => 'required'
-        ]);
-        $caliperFamily = new CaliperFamilies;
-        $caliperFamily->family = $request->family;
-        $caliperFamily->save();
+        try {
+            $request->validate([
+                'family' => 'required'
+            ]);
+            $caliperFamily = new CaliperFamilies;
+            $caliperFamily->family = $request->family;
+            $caliperFamily->save();
+        } catch(Throwable $e) {
+            return redirect()->route('caliperFamilies.index')
+                ->with('failure', "There was an error creating the family, please try again or contact IT with the data you're trying to input.");    
+        }
         return redirect()->route('caliperFamilies.index')
             ->with('success', 'Family has been created successfully.');
     }
@@ -88,12 +94,17 @@ class CaliperFamiliesCRUDController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $request->validate([
-            'family' => 'required'
-        ]);
-        $caliperFamily = CaliperFamilies::find($id);
-        $caliperFamily->family = $request->family;
-        $caliperFamily->save();
+        try {
+            $request->validate([
+                'family' => 'required'
+            ]);
+            $caliperFamily = CaliperFamilies::find($id);
+            $caliperFamily->family = $request->family;
+            $caliperFamily->save();
+        } catch(Throwable $e) {
+            return redirect()->route('caliperFamilies.index')
+                ->with('failure', "There was an error updating the family, please try again or contact IT with the data you're trying to input.");    
+        }
         return redirect()->route('caliperFamilies.index')
             ->with('success', 'Family has been updated successfully.');
     }

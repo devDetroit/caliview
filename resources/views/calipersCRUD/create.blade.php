@@ -68,65 +68,67 @@
                         <div class="row">
                             <h5 class="card-title"><strong>Related Components</strong></h5>
                         </div>
-                        <div class="row mb-3">
-                            <div class="col-sm-4">
-                                <label for="componentNo[0]" class="form-label">Component</label>
-                                <select name="componentNo" class="form-select" id="componentNo[0]" onchange="checkComponents(0)" required>
-                                    <option selected value="">Select a Component</option>
-                                    @foreach($components as $component)
-                                    <option name="componentOption" value="{{ $component->id }}">{{ $component->component_number }}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-                            <div class="col-sm-5">
-                                <label for="componentMeasure[0]" class="form-label">Measurements</label>
-                                <input type="text" name="componentMeasure" class="form-control" id="componentMeasure[0]" readonly>
-                            </div>
-                            <div class="col-sm-2">
-                                <label for="componentQuantity[0]" class="form-label">Quantity</label>
-                                <input type="number" name="componentQuantity" class="form-control" id="componentQuantity[0]">
-                            </div>
-                            <div class="col-sm-1 mt-4">
-                                <a class="btn btn-success btn-sm" onclick="addComponents()">+</a>
+                        <div id="componentsList">
+                            <div class="row mb-3">
+                                <div class="col-sm-4">
+                                    <label for="componentNo[0]" class="form-label">Component</label>
+                                    <select name="componentNo[0]" class="form-select" id="componentNo[0]" onchange="autofillMeasure(0)" required>
+                                        <option selected value="">Select a Component</option>
+                                        @foreach($components as $component)
+                                        <option name="componentOption" value="{{ $component->id }}">{{ $component->component_number }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                <div class="col-sm-5">
+                                    <label for="componentMeasure[0]" class="form-label">Measurements</label>
+                                    <input type="text" name="componentMeasure[0]" class="form-control" id="componentMeasure[0]" readonly>
+                                </div>
+                                <div class="col-sm-2">
+                                    <label for="componentQuantity[0]" class="form-label">Quantity</label>
+                                    <input type="number" name="componentQuantity[0]" class="form-control" id="componentQuantity[0]" min="1" max="100">
+                                </div>
+                                <div class="col-sm-1 mt-4">
+                                    <a class="btn btn-success btn-sm" onclick="addComponents()">+</a>
+                                </div>
                             </div>
                         </div>
-                        <div id="extraComponents"></div>
                         <div class="row">
                             <h5 class="card-title"><strong>Compatible Vehicles</strong></h5>
                         </div>
-                        <div class="row mb-3">
-                            <div class="col-sm-2">
-                                <label for="vehicleYear[0]" class="form-label">Year</label>
-                                <select name="vehicleYear" class="form-select" id="vehicleYear[0]" onchange="autofillMakers(0)">
-                                    <option selected value="">Year</option>
-                                    @for($i = date("Y"); $i >= 1960; $i--)
-                                    <option value="{{ $i }}">{{ $i }}</option>
-                                    @endfor
-                                </select>
-                            </div>
-                            <div class="col-sm-3">
-                                <label for="vehicleMaker[0]" class="form-label">Maker</label>
-                                <select name="vehicleMaker" class="form-select" id="vehicleMaker[0]" onchange="autofillModels(0)">
-                                    <option selected value="">Maker</option>
-                                </select>
-                            </div>
-                            <div class="col-sm-3">
-                                <label for="vehicleModel[0]" class="form-label">Model</label>
-                                <select name="vehicleModel" class="form-select" id="vehicleModel[0]" onchange="checkVehicles(0)">
-                                    <option selected value="">Model</option>
-                                </select>
-                            </div>
-                            <div class="col-sm-3">
-                                <label for="vehicleEngine[0]" class="form-label">Engine</label>
-                                <select name="vehicleEngine" class="form-select" id="vehicleEngine[0]">
-                                    <option selected value="">Engine</option>
-                                </select>
-                            </div>
-                            <div class="col-sm-1 mt-4">
-                                <a class="btn btn-success btn-sm" onclick="addVehicles()">+</a>
+                        <div id="vehiclesList">
+                            <div class="row mb-3">
+                                <div class="col-sm-2">
+                                    <label for="vehicleYear[0]" class="form-label">Year</label>
+                                    <select name="vehicleYear[0]" class="form-select" id="vehicleYear[0]" onchange="autofillMakers(0)">
+                                        <option selected value="">Year</option>
+                                        @for($i = date("Y"); $i >= 1960; $i--)
+                                        <option value="{{ $i }}">{{ $i }}</option>
+                                        @endfor
+                                    </select>
+                                </div>
+                                <div class="col-sm-3">
+                                    <label for="vehicleMaker[0]" class="form-label">Maker</label>
+                                    <select name="vehicleMaker[0]" class="form-select" id="vehicleMaker[0]" onchange="autofillModels(0)">
+                                        <option selected value="">Maker</option>
+                                    </select>
+                                </div>
+                                <div class="col-sm-3">
+                                    <label for="vehicleModel[0]" class="form-label">Model</label>
+                                    <select name="vehicleModel[0]" class="form-select" id="vehicleModel[0]" onchange="autofillEngines(0)">
+                                        <option selected value="">Model</option>
+                                    </select>
+                                </div>
+                                <div class="col-sm-3">
+                                    <label for="vehicleEngine[0]" class="form-label">Engine</label>
+                                    <select name="vehicleEngine[0]" class="form-select" id="vehicleEngine[0]">
+                                        <option selected value="">Engine</option>
+                                    </select>
+                                </div>
+                                <div class="col-sm-1 mt-4">
+                                    <a class="btn btn-success btn-sm" onclick="addVehicles()">+</a>
+                                </div>
                             </div>
                         </div>
-                        <div id="extraVehicles"></div>
                         <div class="float-end">
                             <button type="submit" class="btn btn-primary">Submit</button>
                         </div>
@@ -143,36 +145,38 @@
 <script>
     //--------------------COMPONENTS--------------------\\
     const components = <?php echo json_encode($components); ?>;
+    const divComponents = document.getElementById("componentsList");
     
     // Autofill measure when selecting a Component and switch requirement on Quantity
     function autofillMeasure(id) {
         if (event.target.value == "") {
             document.getElementById(`componentMeasure[${id}]`).value = "";
             document.getElementById(`componentQuantity[${id}]`).removeAttribute("required");
+            // Run checkComponents to re-enable the deselected Component
+            checkComponents();
         } else {
             document.getElementById(`componentMeasure[${id}]`).value = components[(event.target.value) - 1].measure;
             document.getElementById(`componentQuantity[${id}]`).setAttribute("required", "");
+            // Run checkComponents to disable the selected Component
+            checkComponents();
         }
     }
     
     // Prevent from choosing duplicate components
-    function checkComponents(id) {
+    function checkComponents() {
         const options = document.getElementsByName("componentOption");
         options.forEach(option => {
-            option.disabled = false;
+            option.readOnly = false;
         });
-        const compSelects = document.getElementsByName("componentNo");
+        const compSelects = divComponents.getElementsByTagName("select");
         if(compSelects.length > 1) {
-            compSelects.forEach(select => {
-                if(select.id != event.target.id) {
-                    options.forEach(option => {
-                        if(option.value == event.target.value || option.value == select.value)
-                            option.disabled = true;
-                    });
-                }
-            });
+            for(const select of compSelects) {
+                options.forEach(option => {
+                    if(option.value == select.value)
+                        option.readOnly = true;
+                });
+            }
         }
-        autofillMeasure(id);
     }
 
     // Add component forms
@@ -180,11 +184,10 @@
 
     function addComponents() {
         // Create new row
-        const mainForm = document.getElementById("extraComponents");
         const divRow = document.createElement("div");
         divRow.className = "row mb-3";
         divRow.id = "rowComp" + compCount;
-        mainForm.appendChild(divRow);
+        divComponents.appendChild(divRow);
 
         // Component column
         const divComponentNo = document.createElement("div");
@@ -192,10 +195,10 @@
         divRow.appendChild(divComponentNo);
 
         const selectComponentNo = document.createElement("select");
-        selectComponentNo.name = "componentNo";
+        selectComponentNo.name = `componentNo[${compCount}]`;
         selectComponentNo.className = "form-select";
         selectComponentNo.id = `componentNo[${compCount}]`;
-        selectComponentNo.setAttribute("onchange", `checkComponents(${compCount})`);
+        selectComponentNo.setAttribute("onchange", `autofillMeasure(${compCount})`);
         divComponentNo.appendChild(selectComponentNo);
 
         const defaultOptComponentNo = document.createElement("option");
@@ -218,7 +221,7 @@
         divRow.appendChild(divComponentMeasure);
 
         const inputComponentMeasure = document.createElement("input");
-        inputComponentMeasure.name = "componentMeasure";
+        inputComponentMeasure.name = `componentMeasure[${compCount}]`;
         inputComponentMeasure.className = "form-control";
         inputComponentMeasure.id = `componentMeasure[${compCount}]`;
         inputComponentMeasure.readOnly = true;
@@ -230,9 +233,12 @@
         divRow.appendChild(divComponentQty);
 
         const inputComponentQty = document.createElement("input");
-        inputComponentQty.name = "componentQuantity";
+        inputComponentQty.type = "number";
+        inputComponentQty.name = `componentQuantity[${compCount}]`;
         inputComponentQty.className = "form-control";
         inputComponentQty.id = `componentQuantity[${compCount}]`;
+        inputComponentQty.min = 1;
+        inputComponentQty.max = 100;
         divComponentQty.appendChild(inputComponentQty);
 
         // Add and Remove buttons
@@ -254,17 +260,39 @@
 
         // Add to counter
         compCount += 1;
+
+        // Run checkComponents to disable already chosen options on newly created row
+        checkComponents();
     }
     
     // Remove component forms
     function removeComponents(rowNumber) {
-        const mainForm = document.getElementById("extraComponents");
         const childRow = document.getElementById(`rowComp${rowNumber}`);
-        mainForm.removeChild(childRow);
+        divComponents.removeChild(childRow);
+        // After deleting the row, run checkComponents to re-enable the Component that was deleted
+        checkComponents();
     }
 
     //--------------------VEHICLES--------------------\\
     const vehicles = <?php echo json_encode($vehicles); ?>;
+    const divVehicles = document.getElementById("vehiclesList");
+
+    // Prevent from choosing duplicate vehicles
+    function checkVehicles() {
+        const options = document.getElementsByName("engineOption");
+        options.forEach(option => {
+            option.readOnly = false;
+        });
+        const vehSelects = divVehicles.querySelectorAll(`[name^="vehicleEngine"]`);
+        if(vehSelects.length > 1) {
+            vehSelects.forEach(select => {
+                options.forEach(option => {
+                    if(option.value == select.value)
+                        option.readOnly = true;
+                });
+            });
+        }
+    }
     
     // Autofill Makers when selecting a Year and switch requirement on the rest of the form
     function autofillMakers(id) {
@@ -364,26 +392,8 @@
             defaultOptEngine.selected = true;
             selectEngine.appendChild(defaultOptEngine);
         }
-    }
-
-    // Prevent from choosing duplicate vehicles
-    function checkVehicles(id) {
-        const options = document.getElementsByName("engineOption");
-        options.forEach(option => {
-            option.disabled = false;
-        });
-        autofillEngines(id);
-        const vehSelects = document.getElementsByName("vehicleEngine");
-        if(vehSelects.length > 1) {
-            vehSelects.forEach(select => {
-                if(select.id != event.target.id) {
-                    options.forEach(option => {
-                        if(option.value == event.target.value || option.value == select.value)
-                            option.disabled = true;
-                    });
-                }
-            });
-        }
+        // Run checkVehicles to disable the newly added Engine options that have already been choosen
+        checkVehicles();
     }
 
     // Add vehicle forms
@@ -391,11 +401,10 @@
 
     function addVehicles() {
         // Create new row
-        const mainForm = document.getElementById("extraVehicles");
         const divRow = document.createElement("div");
         divRow.className = "row mb-3";
         divRow.id = "rowVeh" + vehCount;
-        mainForm.appendChild(divRow);
+        divVehicles.appendChild(divRow);
 
         // Year column
         const divYear = document.createElement("div");
@@ -403,7 +412,7 @@
         divRow.appendChild(divYear);
 
         const selectYear = document.createElement("select");
-        selectYear.name = "vehicleYear";
+        selectYear.name = `vehicleYear[${vehCount}]`;
         selectYear.className = "form-select";
         selectYear.id = `vehicleYear[${vehCount}]`;
         selectYear.setAttribute("onchange", `autofillMakers(${vehCount})`)
@@ -428,7 +437,7 @@
         divRow.appendChild(divMaker);
 
         const selectMaker = document.createElement("select");
-        selectMaker.name = "vehicleMaker";
+        selectMaker.name = `vehicleMaker[${vehCount}]`;
         selectMaker.className = "form-select";
         selectMaker.id = `vehicleMaker[${vehCount}]`;
         selectMaker.setAttribute("onchange", `autofillModels(${vehCount})`)
@@ -446,10 +455,10 @@
         divRow.appendChild(divModel);
 
         const selectModel = document.createElement("select");
-        selectModel.name = "vehicleModel";
+        selectModel.name = `vehicleModel[${vehCount}]`;
         selectModel.className = "form-select";
         selectModel.id = `vehicleModel[${vehCount}]`;
-        selectModel.setAttribute("onchange", `checkVehicles(${vehCount})`)
+        selectModel.setAttribute("onchange", `autofillEngines(${vehCount})`)
         divModel.appendChild(selectModel);
 
         const defaultOptModel = document.createElement("option");
@@ -464,7 +473,7 @@
         divRow.appendChild(divEngine);
 
         const selectEngine = document.createElement("select");
-        selectEngine.name = "vehicleEngine";
+        selectEngine.name = `vehicleEngine[${vehCount}]`;
         selectEngine.className = "form-select";
         selectEngine.id = `vehicleEngine[${vehCount}]`;
         divEngine.appendChild(selectEngine);
@@ -492,15 +501,19 @@
         buttonRemove.text = "-";
         divButtons.appendChild(buttonRemove);
 
+        // After creating the row, run checkVehicles to disable the newly added Engine options that have already been choosen
+        checkVehicles();
+
         // Add to counter
         vehCount += 1;
     }
     
     // Remove vehicle forms
     function removeVehicles(rowNumber) {
-        const mainForm = document.getElementById("extraVehicles");
         const childRow = document.getElementById(`rowVeh${rowNumber}`);
-        mainForm.removeChild(childRow);
+        divVehicles.removeChild(childRow);
+        // After deleting the row, run checkVehicles to re-enable the Engine that was deleted
+        checkVehicles();
     }
 </script>
 @endsection

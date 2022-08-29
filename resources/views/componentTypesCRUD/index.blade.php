@@ -7,6 +7,10 @@
         <div class="alert alert-success">
             <p>{{ $message }}</p>
         </div>
+        @elseif($message = Session::get('failure'))
+        <div class="alert alert-danger">
+            <p>{{ $message }}</p>
+        </div>
         @endif
         <div class="col-md-8">
             <div class="card">

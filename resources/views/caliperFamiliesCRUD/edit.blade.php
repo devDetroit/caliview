@@ -3,11 +3,11 @@
 @section('content')
 <div class="container">
     <div class="row justify-content-center">
-        @if(session('status'))
+        <!-- @if(session('status'))
         <div class="alert alert-success mb-1 mt-1">
             {{ session('status') }}
         </div>
-        @endif
+        @endif -->
         <div class="col-md-8">
             <div class="card">
                 <div class="card-header">

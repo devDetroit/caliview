@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\ComponentTypes;
 use Illuminate\Http\Request;
+use Throwable;
 
 class ComponentTypesCRUDController extends Controller
 {
@@ -45,12 +46,17 @@ class ComponentTypesCRUDController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
-            'type' => 'required'
-        ]);
-        $componentType = new ComponentTypes;
-        $componentType->type = $request->type;
-        $componentType->save();
+        try {
+            $request->validate([
+                'type' => 'required'
+            ]);
+            $componentType = new ComponentTypes;
+            $componentType->type = $request->type;
+            $componentType->save();
+        } catch(Throwable $e) {
+            return redirect()->route('componentTypes.index')
+                ->with('failure', "There was an error creating the type, please try again or contact IT with the data you're trying to input.");    
+        }
         return redirect()->route('componentTypes.index')
             ->with('success', 'Type has been created successfully.');
     }
@@ -83,12 +89,17 @@ class ComponentTypesCRUDController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $request->validate([
-            'type' => 'required'
-        ]);
-        $componentType = ComponentTypes::find($id);
-        $componentType->type = $request->type;
-        $componentType->save();
+        try {
+            $request->validate([
+                'type' => 'required'
+            ]);
+            $componentType = ComponentTypes::find($id);
+            $componentType->type = $request->type;
+            $componentType->save();
+        } catch(Throwable $e) {
+            return redirect()->route('componentTypes.index')
+                ->with('failure', "There was an error updating the type, please try again or contact IT with the data you're trying to input.");    
+        }
         return redirect()->route('componentTypes.index')
             ->with('success', 'Type has been updated successfully.');
     }
