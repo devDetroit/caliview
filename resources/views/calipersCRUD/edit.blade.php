@@ -148,30 +148,28 @@
         if (event.target.value == "") {
             document.getElementById(`componentMeasure[${id}]`).value = "";
             document.getElementById(`componentQuantity[${id}]`).removeAttribute("required");
-            // Run checkComponents to re-enable the deselected Component
-            checkComponents();
         } else {
             document.getElementById(`componentMeasure[${id}]`).value = components[(event.target.value) - 1].measure;
             document.getElementById(`componentQuantity[${id}]`).setAttribute("required", "");
-            // Run checkComponents to disable the selected Component
-            checkComponents();
         }
+        // Run checkComponents to re-enable or disable the selected option
+        checkComponents();
     }
     
     // Prevent from choosing duplicate components
     function checkComponents() {
-        const options = document.getElementsByName("componentOption");
+        let options = document.getElementsByName("componentOption");
         options.forEach(option => {
-            option.readOnly = false;
+            option.disabled = false;
         });
-        const compSelects = divComponents.getElementsByTagName("select");
+        const compSelects = document.querySelectorAll(`[name^="componentNo"]`);
         if(compSelects.length > 1) {
-            for(const select of compSelects) {
+            compSelects.forEach(select => {
                 options.forEach(option => {
-                    if(option.value == select.value)
-                        option.readOnly = true;
+                    if(option.value == select.value && option.parentElement.id != select.id)
+                        option.disabled = true;
                 });
-            }
+            });
         }
     }
 
@@ -437,14 +435,14 @@
     function checkVehicles() {
         const options = document.getElementsByName("engineOption");
         options.forEach(option => {
-            option.readOnly = false;
+            option.disabled = false;
         });
-        const vehSelects = document.getElementById("vehiclesList").querySelectorAll(`[name^="vehicleEngine"]`);
+        const vehSelects = document.querySelectorAll(`[name^="vehicleEngine"]`);
         if(vehSelects.length > 1) {
             vehSelects.forEach(select => {
                 options.forEach(option => {
-                    if(option.value == select.value)
-                        option.readOnly = true;
+                    if(option.value == select.value && option.parentElement.id != select.id)
+                        option.disabled = true;
                 });
             });
         }
